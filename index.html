@@ -9,6 +9,7 @@
     <link rel="icon" href="images/logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="src/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="script.js" defer></script>
   </head>
   <body class="bg-[#F5F0E6] text-[#4A4A4A]">
     <!-- Navigation -->
@@ -163,21 +164,30 @@
             </div>
           </div>
           <div>
-            <form class="bg-[#F5F0E6] p-8 rounded-lg shadow-md">
+            <form id="contactForm" class="bg-[#F5F0E6] p-8 rounded-lg shadow-md">
               <h3 class="text-2xl font-bold mb-6 text-center">Solicitar Agendamento</h3>
+              
               <div class="mb-4">
-                <input type="text" placeholder="Nome Completo" class="w-full p-3 border rounded-md">
+                <input type="text" id="name" name="name" placeholder="Nome Completo" class="w-full p-3 border rounded-md" required>
               </div>
+              
               <div class="mb-4">
-                <input type="email" placeholder="E-mail" class="w-full p-3 border rounded-md">
+                <input type="email" id="email" name="email" placeholder="E-mail" class="w-full p-3 border rounded-md" required>
               </div>
+              
               <div class="mb-4">
-                <input type="tel" placeholder="Telefone" class="w-full p-3 border rounded-md">
+                <input type="tel" id="phone" name="phone" placeholder="Telefone" class="w-full p-3 border rounded-md" required>
               </div>
+
               <div class="mb-4">
-                <textarea placeholder="Sua Mensagem" class="w-full p-3 border rounded-md" rows="4"></textarea>
+                <input hidden type="text" id="subject" name="subject" placeholder="Assunto" value="Contato via site" class="w-full p-3 border rounded-md" required>
               </div>
-              <button class="w-full bg-[#8B7D6B] text-white py-3 rounded-full hover:opacity-90 transition">Enviar Solicitação</button>
+              
+              <div class="mb-4">
+                <textarea id="message" name="message" placeholder="Sua Mensagem" class="w-full p-3 border rounded-md" rows="4" required></textarea>
+              </div>
+              
+              <button type="submit" class="w-full bg-[#8B7D6B] text-white py-3 rounded-full hover:opacity-90 transition">Enviar Solicitação</button>
             </form>
           </div>
         </div>
