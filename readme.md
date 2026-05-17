@@ -1,32 +1,36 @@
-# Dra. Júlia Benedetti | Dermatologia
+# Dra. Julia Benedetti | Site Institucional
 
-Este repositório contém o código-fonte do site oficial da Dra. Júlia Benedetti, uma dermatologista especializada em dermatologia clínica e estética. O site fornece informações sobre sua formação, serviços oferecidos e formas de contato, além de permitir o agendamento de consultas.
+Este repositório contém o site institucional da Dra. Julia Benedetti, com foco em apresentação da médica, áreas de atuação, tratamentos e contato.
 
-## 🔗 Acesse o Site
-O site pode ser acessado em: https://drajuliabenedetti.com.br/
+## Estrutura
 
-## 📌 Funcionalidades
-- Apresentação da Dra. Júlia Benedetti e sua trajetória profissional.
-- Listagem de serviços oferecidos, incluindo dermatologia clínica e estética.
-- Seção de contato com informações e formulário para agendamento de consultas.
-- Layout responsivo e otimizado para diferentes dispositivos.
-
-## 🚀 Tecnologias Utilizadas
-- **HTML5** e **CSS3**
-- **Tailwind CSS** para estilização
-- **JavaScript** para interatividade
-- **Font Awesome** para ícones
-
-## 📂 Estrutura do Projeto
-```
+```text
 /
-├── index.html       # Página principal do site
-├── src/
-│   ├── output.css   # Estilização principal (gerado pelo Tailwind)
-│   ├── script.js    # Scripts de interatividade (menu mobile, etc.)
-├── images/          # Imagens usadas no site
-└── README.md        # Documentação do repositório
+├── index.html              # Página inicial
+├── sobre.html              # Página institucional / biografia
+├── tratamento.html         # Página de tratamentos e tecnologia
+├── contato.html            # Página de contato
+├── assets/
+│   ├── css/
+│   │   └── styles.css      # Estilos globais do site
+│   ├── js/
+│   │   └── main.js         # Menu mobile e envio do formulário
+│   └── images/
+│       ├── branding/       # Logo e identidade base
+│       ├── home/           # Imagens usadas na home
+│       ├── about/          # Imagens da página Sobre
+│       ├── treatments/     # Imagens da página Tratamentos
+│       └── legacy/         # Arquivos antigos mantidos só como referência
+├── archive/
+│   ├── home-b.html         # Versão antiga de protótipo
+│   └── tailwind-output.css # Build antigo não utilizado no layout atual
+├── package.json
+├── package-lock.json
+└── tailwind.config.js
 ```
 
----
+## Observações
 
+- O layout atual usa HTML estático com CSS e JS próprios.
+- O arquivo `tailwind.config.js` foi mantido porque fazia parte da estrutura anterior, mas o site atual não depende do `output.css` arquivado.
+- As imagens foram separadas por contexto para facilitar manutenção e substituição futura.
