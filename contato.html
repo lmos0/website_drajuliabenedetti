@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contato | Dra. Julia Benedetti</title>
+    <meta
+      name="description"
+      content="Entre em contato com a Dra. Julia Benedetti para agendamentos, dúvidas e atendimento."
+    />
+    <link rel="icon" href="assets/images/branding/logo.jpg" type="image/jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/main.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="container">
+          <a class="brand" href="index.html" aria-label="Página inicial">
+            <span class="brand-mark">JB</span>
+          </a>
+
+          <nav class="nav" aria-label="Principal">
+            <a href="sobre.html">Sobre</a>
+            <a href="tratamento.html">Tratamentos</a>
+            <a href="tratamento.html#tecnologia">Tecnologia</a>
+            <a class="active" href="contato.html">Contato</a>
+          </nav>
+
+          <div class="header-actions">
+            <a
+              class="header-cta"
+              href="https://api.whatsapp.com/send/?phone=5519981096007&text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta.&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Agendar Consulta
+            </a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+              ☰
+            </button>
+          </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+          <a href="sobre.html">Sobre</a>
+          <a href="tratamento.html">Tratamentos</a>
+          <a href="tratamento.html#tecnologia">Tecnologia</a>
+          <a href="contato.html">Contato</a>
+          <a
+            href="https://api.whatsapp.com/send/?phone=5519981096007&text=Ol%C3%A1%2C+gostaria+de+agendar+uma+consulta.&type=phone_number&app_absent=0"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Agendar Consulta
+          </a>
+        </div>
+      </header>
+
+      <main class="page-hero">
+        <section>
+          <div class="container contact-grid">
+            <div class="contact-copy">
+              <p class="eyebrow">Contato</p>
+              <h1 class="section-title">Sinta-se à vontade para entrar em contato.</h1>
+              <p>
+                Nossa equipe de curadoria estética está à disposição para
+                agendar sua avaliação e responder às suas dúvidas com atenção e agilidade.
+              </p>
+
+              <div class="contact-details">
+                <div class="detail">
+                  <div class="detail-icon">⌖</div>
+                  <div>
+                    <h3>Clínica</h3>
+                    <div class="muted">
+                      Av. República do Líbano, 251
+                      <br />
+                      Jardim Paulista, São Paulo - SP
+                      <br />
+                      04501-000
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail">
+                  <div class="detail-icon">✉</div>
+                  <div>
+                    <h3>Email</h3>
+                    <a class="muted" href="mailto:atendimento@drajuliabenedetti.com.br">
+                      atendimento@drajuliabenedetti.com.br
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-actions">
+                <a
+                  class="button"
+                  href="https://api.whatsapp.com/send/?phone=5519981096007&text=Ol%C3%A1%2C+gostaria+de+mais+informa%C3%A7%C3%B5es.&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  WhatsApp
+                </a>
+                <a
+                  class="button-outline"
+                  href="https://www.instagram.com/drajuliabenedetti/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Instagram
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-card">
+                <form id="contactForm" data-endpoint="http://localhost:5001/api/forms">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="name">Nome Completo</label>
+                      <input id="name" name="name" type="text" placeholder="Como prefere ser chamado?" required />
+                    </div>
+
+                    <div class="field-grid">
+                      <div class="field">
+                        <label for="email">E-mail</label>
+                        <input id="email" name="email" type="email" placeholder="seu@email.com" required />
+                      </div>
+
+                      <div class="field">
+                        <label for="phone">Telefone</label>
+                        <input id="phone" name="phone" type="tel" placeholder="(11) 99999-9999" required />
+                      </div>
+                    </div>
+
+                    <input type="hidden" name="subject" value="Contato via site" />
+
+                    <div class="field">
+                      <label for="message">Mensagem</label>
+                      <textarea id="message" name="message" placeholder="Em que podemos ajudar?" required></textarea>
+                    </div>
+
+                    <button class="button" type="submit">Enviar Mensagem</button>
+                    <div class="form-status" id="form-status" aria-live="polite"></div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="map-card" aria-hidden="true">
+                <span class="map-pin"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer-grid">
+          <div>
+            <p class="footer-brand">JB</p>
+            <p class="footer-copy body-large">Curadoria estética e dermatologia avançada para uma beleza autêntica e atemporal.</p>
+            <p class="muted">© 2026 Dra. Júlia Benedetti Dermatologia. Todos os direitos reservados.</p>
+          </div>
+
+          <div class="footer-links">
+            <a href="https://www.instagram.com/drajuliabenedetti/" target="_blank" rel="noreferrer">Instagram</a>
+            <a href="https://www.linkedin.com/in/j%C3%BAlia-benedetti-00a90a15a/" target="_blank" rel="noreferrer">LinkedIn</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
