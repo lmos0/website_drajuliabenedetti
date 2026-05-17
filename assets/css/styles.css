@@ -263,13 +263,18 @@ textarea {
 }
 
 .mobile-menu a:last-child {
+  display: flex;
+  align-items: center;
   margin-top: 8px;
-  min-height: 52px;
-  padding: 0 20px;
+  min-height: 48px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0 18px;
   justify-content: center;
   border-radius: var(--radius-sm);
   background: var(--primary);
   color: var(--white);
+  letter-spacing: 0.12em;
 }
 
 .hero {
@@ -1083,5 +1088,13 @@ textarea {
 
   .mobile-menu {
     padding: 0 12px 18px;
+  }
+
+  .mobile-menu a:last-child {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px;
+    font-size: 0.8rem;
+    text-align: center;
   }
 }
