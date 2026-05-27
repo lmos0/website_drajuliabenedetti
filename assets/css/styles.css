@@ -193,6 +193,80 @@ textarea {
   gap: 20px;
 }
 
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-icon {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(125, 86, 45, 0.56);
+  opacity: 0.72;
+}
+
+.language-icon::before,
+.language-icon::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border-left: 1px solid rgba(125, 86, 45, 0.56);
+  border-right: 1px solid rgba(125, 86, 45, 0.56);
+}
+
+.language-icon::after {
+  inset: 8px 2px auto;
+  height: 0;
+  border: 0;
+  border-top: 1px solid rgba(125, 86, 45, 0.56);
+}
+
+.language-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.language-option {
+  position: relative;
+  color: rgba(80, 69, 59, 0.62);
+  transition: 180ms ease;
+}
+
+.language-option:hover,
+.language-option.active {
+  color: var(--primary);
+}
+
+.language-option.active {
+  font-weight: 600;
+}
+
+.language-option.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0.2em;
+  bottom: -5px;
+  height: 1px;
+  background: rgba(125, 86, 45, 0.48);
+}
+
+.language-divider {
+  color: rgba(80, 69, 59, 0.26);
+  font-weight: 300;
+}
+
 .button,
 .button-outline,
 .header-cta {
@@ -254,7 +328,7 @@ textarea {
   gap: 14px;
 }
 
-.mobile-menu a {
+.mobile-menu > a {
   font-size: 0.88rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -262,7 +336,7 @@ textarea {
   padding: 10px 0;
 }
 
-.mobile-menu a:last-child {
+.mobile-menu > a:last-child {
   display: flex;
   align-items: center;
   margin-top: 8px;
@@ -880,6 +954,14 @@ textarea {
     gap: 16px;
   }
 
+  .header-actions {
+    gap: 12px;
+  }
+
+  .language-options {
+    font-size: 0.72rem;
+  }
+
   .section,
   .page-hero,
   .hero,
@@ -1090,7 +1172,7 @@ textarea {
     padding: 0 12px 18px;
   }
 
-  .mobile-menu a:last-child {
+  .mobile-menu > a:last-child {
     width: 100%;
     min-height: 46px;
     padding: 0 16px;
