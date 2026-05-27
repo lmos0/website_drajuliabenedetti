@@ -1,5 +1,25 @@
 const params = new URLSearchParams(window.location.search);
-const currentLang = params.get("lang") === "en" ? "en" : "pt";
+const requestedLang = params.get("lang");
+const readStoredLang = () => {
+  try {
+    return localStorage.getItem("siteLanguage");
+  } catch (error) {
+    return null;
+  }
+};
+const writeStoredLang = (language) => {
+  try {
+    localStorage.setItem("siteLanguage", language);
+  } catch (error) {
+    // The URL parameter still carries the selected language when storage is unavailable.
+  }
+};
+const currentLang =
+  requestedLang === "en" || requestedLang === "pt"
+    ? requestedLang
+    : readStoredLang() === "en"
+      ? "en"
+      : "pt";
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.getElementById("mobile-menu");
@@ -234,7 +254,7 @@ const pageTranslations = {
 
 const updateLanguageLinks = () => {
   const hash = window.location.hash;
-  const portugueseHref = `${pageName}${hash}`;
+  const portugueseHref = `${pageName}?lang=pt${hash}`;
   const englishHref = `${pageName}?lang=en${hash}`;
 
   document.querySelectorAll(".language-option[lang='pt-BR']").forEach((link) => {
@@ -251,6 +271,13 @@ const updateLanguageLinks = () => {
 };
 
 updateLanguageLinks();
+writeStoredLang(currentLang);
+
+document.querySelectorAll(".language-option").forEach((link) => {
+  link.addEventListener("click", () => {
+    writeStoredLang(link.lang === "en" ? "en" : "pt");
+  });
+});
 
 if (currentLang === "en") {
   commonEnglish();
