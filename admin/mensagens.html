@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mensagens | Área Administrativa - Dra. Julia Benedetti</title>
+    <meta
+      name="description"
+      content="Gerenciamento de mensagens recebidas pelo site da Dra. Julia Benedetti."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="../assets/images/branding/screen.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <script src="../assets/js/main.js" defer></script>
+  </head>
+  <body class="admin-body">
+    <div class="admin-dashboard">
+      <!-- Side Navigation -->
+      <nav class="admin-sidebar admin-sidebar-fixed" aria-label="Administrativo">
+        <div class="admin-sidebar-brand">
+          <span class="admin-login-mark">JB</span>
+          <span class="admin-sidebar-label">Admin Workspace</span>
+        </div>
+
+        <div class="admin-nav">
+          <a class="admin-nav-item" href="#">
+            <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+            <span>Overview</span>
+          </a>
+          <a class="admin-nav-item" href="agenda.html">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+            <span>Agenda</span>
+          </a>
+          <a class="admin-nav-item" href="agendamentos.html">
+            <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
+            <span>Agendamentos</span>
+          </a>
+          <a class="admin-nav-item" href="#">
+            <span class="material-symbols-outlined" aria-hidden="true">patient_list</span>
+            <span>Pacientes</span>
+          </a>
+          <a class="admin-nav-item active" href="mensagens.html" aria-current="page">
+            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+            <span>Mensagens</span>
+          </a>
+          <a class="admin-nav-item" href="#">
+            <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+            <span>Configurações</span>
+          </a>
+        </div>
+
+        <div class="admin-sidebar-footer">
+          <a class="admin-nav-item admin-nav-item-danger" href="login.html">
+            <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+            <span>Sair</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Mobile Top Bar -->
+      <div class="admin-mobile-bar">
+        <span class="admin-login-mark">JB</span>
+        <button
+          class="admin-menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="admin-mobile-menu"
+          aria-label="Abrir menu"
+        >
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+
+      <div class="admin-mobile-menu" id="admin-mobile-menu">
+        <a class="admin-nav-item" href="#">
+          <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+          <span>Overview</span>
+        </a>
+        <a class="admin-nav-item" href="agenda.html">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          <span>Agenda</span>
+        </a>
+        <a class="admin-nav-item" href="agendamentos.html">
+          <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
+          <span>Agendamentos</span>
+        </a>
+        <a class="admin-nav-item" href="#">
+          <span class="material-symbols-outlined" aria-hidden="true">patient_list</span>
+          <span>Pacientes</span>
+        </a>
+        <a class="admin-nav-item active" href="mensagens.html" aria-current="page">
+          <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+          <span>Mensagens</span>
+        </a>
+        <a class="admin-nav-item" href="#">
+          <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+          <span>Configurações</span>
+        </a>
+        <a class="admin-nav-item admin-nav-item-danger" href="login.html">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+          <span>Sair</span>
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <main class="admin-content admin-content-messages">
+        <header class="admin-messages-header">
+          <div>
+            <h1>Mensagens Recebidas</h1>
+            <p>Gerencie os contatos recebidos pelo site.</p>
+          </div>
+          <div class="admin-messages-search">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span>
+            <input
+              type="text"
+              id="message-search"
+              placeholder="Buscar mensagens..."
+              aria-label="Buscar mensagens"
+            />
+          </div>
+        </header>
+
+        <div class="admin-messages-layout">
+          <!-- Message List -->
+          <div class="admin-messages-list">
+            <div class="admin-messages-filters" role="group" aria-label="Filtrar mensagens">
+              <button class="button admin-filter-button active" data-filter="all" type="button">
+                Todas
+              </button>
+              <button class="button-outline admin-filter-button" data-filter="new" type="button">
+                Novas
+              </button>
+              <button class="button-outline admin-filter-button" data-filter="read" type="button">
+                Lidas
+              </button>
+              <button class="button-outline admin-filter-button" data-filter="replied" type="button">
+                Respondidas
+              </button>
+            </div>
+
+            <div class="admin-messages-items" id="admin-messages-items"></div>
+          </div>
+
+          <!-- Message Detail -->
+          <div class="admin-message-detail" id="admin-message-detail">
+            <div class="admin-message-detail-empty" id="admin-message-empty">
+              <span class="material-symbols-outlined">mail</span>
+              <p>Selecione uma mensagem para visualizar os detalhes.</p>
+            </div>
+
+            <div class="admin-message-detail-content hidden" id="admin-message-content">
+              <div class="admin-message-detail-header">
+                <div>
+                  <h2 id="detail-subject"></h2>
+                  <div class="admin-message-detail-meta">
+                    <div class="admin-message-avatar" id="detail-avatar"></div>
+                    <div>
+                      <p class="admin-message-author">
+                        <span id="detail-name"></span>
+                        <span id="detail-email"></span>
+                      </p>
+                      <p class="admin-message-date" id="detail-date"></p>
+                      <p class="admin-message-phone" id="detail-phone"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="admin-message-detail-actions">
+                  <button
+                    class="admin-message-action"
+                    id="detail-reply-btn"
+                    type="button"
+                    aria-label="Responder"
+                    title="Responder"
+                  >
+                    <span class="material-symbols-outlined">reply</span>
+                  </button>
+                  <button
+                    class="admin-message-action"
+                    id="detail-archive-btn"
+                    type="button"
+                    aria-label="Arquivar"
+                    title="Arquivar"
+                  >
+                    <span class="material-symbols-outlined">archive</span>
+                  </button>
+                  <button
+                    class="admin-message-action admin-message-action-danger"
+                    id="detail-delete-btn"
+                    type="button"
+                    aria-label="Excluir"
+                    title="Excluir"
+                  >
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="admin-message-body" id="detail-body"></div>
+
+              <div class="admin-message-reply" id="admin-message-reply">
+                <div class="admin-message-reply-box">
+                  <textarea
+                    id="reply-text"
+                    rows="4"
+                    placeholder="Escreva sua resposta..."
+                    aria-label="Resposta"
+                  ></textarea>
+                  <div class="admin-message-reply-toolbar">
+                    <div class="admin-message-reply-tools">
+                      <button type="button" aria-label="Anexar arquivo">
+                        <span class="material-symbols-outlined">attach_file</span>
+                      </button>
+                      <button type="button" aria-label="Negrito">
+                        <span class="material-symbols-outlined">format_bold</span>
+                      </button>
+                      <button type="button" aria-label="Itálico">
+                        <span class="material-symbols-outlined">format_italic</span>
+                      </button>
+                    </div>
+                    <button class="button" id="send-reply-btn" type="button">
+                      <span>Enviar Resposta</span>
+                      <span class="material-symbols-outlined">send</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
