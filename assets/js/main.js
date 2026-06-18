@@ -51,6 +51,38 @@ const setAttr = (selector, attr, value) => {
   });
 };
 
+const API_BASE = "http://localhost:8082";
+
+async function api(path, options = {}) {
+  const url = `${API_BASE}${path}`;
+  const token = localStorage.getItem("adminToken");
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...options.headers,
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, { ...options, headers });
+
+  if (response.status === 401) {
+    localStorage.removeItem("adminToken");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: "Erro inesperado" }));
+    throw new Error(error.error || `Erro ${response.status}`);
+  }
+
+  if (response.status === 204) return null;
+  return response.json();
+}
+
 const commonEnglish = () => {
   document.documentElement.lang = "en";
 
@@ -76,11 +108,11 @@ const commonEnglish = () => {
   });
 
   setText(".header-cta", "Book an Appointment");
-  setAttr(".header-cta", "href", "https://api.whatsapp.com/send/?phone=5519981096007&text=Hello%2C+I+would+like+to+book+an+appointment.&type=phone_number&app_absent=0");
+  setAttr(".header-cta", "href", "agendar.html?lang=en");
 
   document.querySelectorAll(".mobile-menu > a").forEach((link) => {
     if (link.textContent.trim() === "Book an Appointment") {
-      link.setAttribute("href", "https://api.whatsapp.com/send/?phone=5519981096007&text=Hello%2C+I+would+like+to+book+an+appointment.&type=phone_number&app_absent=0");
+      link.setAttribute("href", "agendar.html?lang=en");
     }
   });
 
@@ -250,6 +282,42 @@ const pageTranslations = {
     setAttr("#message", "placeholder", "How can we help?");
     setText(".form-card button", "Send Message");
   },
+
+  "agendar.html": () => {
+    document.title = "Book an Appointment | Dra. Julia Benedetti";
+    setAttr("meta[name='description']", "content", "Book your appointment with Dra. Julia Benedetti quickly and easily.");
+
+    setText(".contact-copy .eyebrow", "Booking");
+    setText(".contact-copy .section-title", "Choose the best date for your appointment.");
+    setText(".contact-copy p:nth-of-type(2)", "Select an available day and time, and fill in your information. We will contact you to confirm your appointment.");
+
+    setText(".booking-form-card h2", "Appointment details");
+    setText(".booking-form-card > p", "Fill in your information to reserve the time slot.");
+
+    const selectedDateEl = document.getElementById("booking-selected-date");
+    if (selectedDateEl && selectedDateEl.textContent.includes("Selecione uma data")) {
+      selectedDateEl.textContent = "Select a date on the calendar.";
+    }
+
+    const emptyStateEl = document.querySelector(".booking-empty-state");
+    if (emptyStateEl && emptyStateEl.textContent.includes("Selecione uma data")) {
+      emptyStateEl.textContent = "Select a date to see available times.";
+    }
+
+    setText("label[for='booking-name']", "Full Name");
+    setAttr("#booking-name", "placeholder", "How would you like to be called?");
+    setText("label[for='booking-email']", "Email");
+    setText("label[for='booking-phone']", "Phone");
+    setAttr("#booking-phone", "placeholder", "+55 11 99999-9999");
+    setText("label[for='booking-notes']", "Notes (optional)");
+    setAttr("#booking-notes", "placeholder", "Any important information?");
+    setText("#booking-submit", "Confirm Appointment");
+
+    const formStatusEl = document.getElementById("booking-form-status");
+    if (formStatusEl && formStatusEl.textContent.includes("Selecione um horário")) {
+      formStatusEl.textContent = "Select a time slot.";
+    }
+  },
 };
 
 const updateLanguageLinks = () => {
@@ -298,6 +366,697 @@ if (menuToggle && mobileMenu) {
       menuToggle.setAttribute("aria-expanded", "false");
     });
   });
+}
+
+const adminLoginForm = document.getElementById("adminLoginForm");
+const adminLoginStatus = document.getElementById("admin-login-status");
+
+if (adminLoginForm) {
+  adminLoginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = adminLoginForm.querySelector("#admin-email")?.value.trim() || "";
+    const password = adminLoginForm.querySelector("#admin-password")?.value || "";
+
+    if (!email || !password) {
+      if (adminLoginStatus) {
+        adminLoginStatus.textContent =
+          currentLang === "en" ? "Please fill in all fields." : "Preencha todos os campos.";
+      }
+      return;
+    }
+
+    if (adminLoginStatus) {
+      adminLoginStatus.textContent =
+        currentLang === "en" ? "Authenticating..." : "Autenticando...";
+    }
+
+    const endpoint = adminLoginForm.dataset.endpoint;
+
+    try {
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Falha na autenticação.");
+        }
+
+        const data = await response.json();
+
+        if (data.token) {
+          localStorage.setItem("adminToken", data.token);
+        }
+
+        if (adminLoginStatus) {
+          adminLoginStatus.textContent =
+            currentLang === "en" ? "Redirecting..." : "Redirecionando...";
+        }
+
+        window.location.href = adminLoginForm.dataset.redirect || "dashboard.html";
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        if (adminLoginStatus) {
+          adminLoginStatus.textContent =
+            currentLang === "en" ? "Redirecting..." : "Redirecionando...";
+        }
+
+        window.location.href = adminLoginForm.dataset.redirect || "agenda.html";
+      }
+    } catch (error) {
+      if (adminLoginStatus) {
+        adminLoginStatus.textContent =
+          currentLang === "en"
+            ? "Invalid email or password."
+            : "E-mail ou senha inválidos.";
+      }
+    }
+  });
+}
+
+// Admin Agenda
+const adminCalendarGrid = document.getElementById("admin-calendar-grid");
+
+if (adminCalendarGrid) {
+  const monthYearEl = document.getElementById("calendar-month-year");
+  const selectedDateTitleEl = document.getElementById("selected-date-title");
+  const selectedDateWeekdayEl = document.getElementById("selected-date-weekday");
+  const dayToggleEl = document.getElementById("day-toggle");
+  const dayToggleLabelEl = document.getElementById("day-toggle-label");
+  const addSlotFormEl = document.getElementById("add-slot-form");
+  const slotsContainerEl = document.getElementById("admin-slots");
+  const copyNextDayBtn = document.getElementById("copy-next-day");
+  const prevMonthBtn = document.getElementById("prev-month");
+  const nextMonthBtn = document.getElementById("next-month");
+
+  const WEEKDAYS = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+  ];
+  const MONTHS = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
+
+  let viewDate = new Date();
+  let selectedDate = new Date();
+  let availabilityByDate = {};
+  let isLoading = false;
+
+  function formatDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function isSameDay(a, b) {
+    return (
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
+    );
+  }
+
+  function getDayData(key) {
+    return availabilityByDate[key] || { is_available: true, slots: [] };
+  }
+
+  async function loadMonthAvailability() {
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth() + 1;
+
+    try {
+      isLoading = true;
+      const days = await api(`/api/admin/availability?year=${year}&month=${month}`);
+      availabilityByDate = {};
+      days.forEach((day) => {
+        availabilityByDate[day.date] = {
+          ...day,
+          slots: day.slots || [],
+        };
+      });
+    } catch (error) {
+      console.error("Erro ao carregar disponibilidade:", error);
+      alert(currentLang === "en" ? "Could not load availability." : "Não foi possível carregar a disponibilidade.");
+    } finally {
+      isLoading = false;
+      renderCalendar();
+      await loadDayDetail(formatDateKey(selectedDate));
+    }
+  }
+
+  async function loadDayDetail(dateKey) {
+    try {
+      const day = await api(`/api/admin/availability/${dateKey}`);
+      availabilityByDate[dateKey] = {
+        ...day,
+        slots: day.slots || [],
+      };
+      renderSlots();
+    } catch (error) {
+      const isNotFound = error.message && (
+        error.message.toLowerCase().includes("not found") ||
+        error.message.toLowerCase().includes("não encontrado")
+      );
+
+      if (isNotFound) {
+        availabilityByDate[dateKey] = {
+          ...(availabilityByDate[dateKey] || {}),
+          date: dateKey,
+          is_available: true,
+          slots: [],
+        };
+        renderSlots();
+        return;
+      }
+
+      console.error("Erro ao carregar detalhes do dia:", error);
+      alert(currentLang === "en" ? "Could not load day details." : "Não foi possível carregar os detalhes do dia.");
+    }
+  }
+
+  function renderCalendar() {
+    adminCalendarGrid.innerHTML = "";
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+
+    if (monthYearEl) {
+      monthYearEl.textContent = `${MONTHS[month]} ${year}`;
+    }
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement("div");
+      empty.className = "admin-calendar-day-placeholder";
+      adminCalendarGrid.appendChild(empty);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const key = formatDateKey(date);
+      const data = getDayData(key);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "admin-calendar-day";
+      btn.textContent = day;
+
+      if (!data.is_available) btn.classList.add("unavailable");
+      if (data.slots && data.slots.length > 0) btn.classList.add("has-slots");
+      if (isSameDay(date, today)) btn.classList.add("today");
+      if (isSameDay(date, selectedDate)) btn.classList.add("selected");
+
+      btn.addEventListener("click", async () => {
+        selectedDate = date;
+        renderCalendar();
+        await loadDayDetail(key);
+      });
+
+      adminCalendarGrid.appendChild(btn);
+    }
+  }
+
+  function renderSlots() {
+    const key = formatDateKey(selectedDate);
+    const data = getDayData(key);
+    const isAvailable = data.is_available;
+
+    if (dayToggleEl) dayToggleEl.checked = isAvailable;
+    if (dayToggleLabelEl) {
+      dayToggleLabelEl.textContent =
+        isAvailable
+          ? currentLang === "en" ? "Available" : "Disponível"
+          : currentLang === "en" ? "Unavailable" : "Indisponível";
+    }
+
+    if (selectedDateTitleEl) {
+      selectedDateTitleEl.textContent = `${String(selectedDate.getDate()).padStart(2, "0")} ${MONTHS[selectedDate.getMonth()]}`;
+    }
+    if (selectedDateWeekdayEl) {
+      selectedDateWeekdayEl.textContent = WEEKDAYS[selectedDate.getDay()];
+    }
+
+    if (!slotsContainerEl) return;
+    slotsContainerEl.innerHTML = "";
+
+    if (!isAvailable) {
+      slotsContainerEl.innerHTML = `<div class="admin-empty-state">${
+        currentLang === "en" ? "Day marked as unavailable." : "Dia marcado como indisponível."
+      }</div>`;
+      return;
+    }
+
+    if (!data.slots || data.slots.length === 0) {
+      slotsContainerEl.innerHTML = `<div class="admin-empty-state">${
+        currentLang === "en" ? "No time slots configured for this day." : "Nenhum horário configurado para este dia."
+      }</div>`;
+      return;
+    }
+
+    const sortedSlots = [...data.slots].sort((a, b) => a.start_time.localeCompare(b.start_time));
+
+    sortedSlots.forEach((slot) => {
+      const slotEl = document.createElement("div");
+      slotEl.className = `admin-slot ${slot.is_booked ? "admin-slot-booked" : ""}`;
+      slotEl.innerHTML = `
+        <div class="admin-slot-time">
+          <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+          <span>${slot.start_time} - ${slot.end_time}</span>
+        </div>
+        <div class="admin-slot-actions">
+          <span class="admin-slot-status ${slot.is_booked ? "booked" : "free"}">
+            ${slot.is_booked ? (currentLang === "en" ? "Booked" : "Agendado") : (currentLang === "en" ? "Free" : "Livre")}
+          </span>
+          ${!slot.is_booked ? `<button class="admin-slot-delete" type="button" aria-label="${currentLang === "en" ? "Remove time slot" : "Remover horário"}" data-id="${slot.id}"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>` : ""}
+        </div>
+      `;
+      slotsContainerEl.appendChild(slotEl);
+    });
+
+    slotsContainerEl.querySelectorAll(".admin-slot-delete").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const slotId = btn.dataset.id;
+        try {
+          await api(`/api/admin/availability/${key}/slots/${slotId}`, { method: "DELETE" });
+          await loadMonthAvailability();
+        } catch (error) {
+          alert(error.message || (currentLang === "en" ? "Could not remove time slot." : "Não foi possível remover o horário."));
+        }
+      });
+    });
+  }
+
+  if (prevMonthBtn) {
+    prevMonthBtn.addEventListener("click", () => {
+      viewDate.setMonth(viewDate.getMonth() - 1);
+      loadMonthAvailability();
+    });
+  }
+
+  if (nextMonthBtn) {
+    nextMonthBtn.addEventListener("click", () => {
+      viewDate.setMonth(viewDate.getMonth() + 1);
+      loadMonthAvailability();
+    });
+  }
+
+  if (dayToggleEl) {
+    dayToggleEl.addEventListener("change", async () => {
+      const key = formatDateKey(selectedDate);
+      try {
+        await api(`/api/admin/availability/${key}`, {
+          method: "PUT",
+          body: JSON.stringify({ is_available: dayToggleEl.checked }),
+        });
+        await loadMonthAvailability();
+      } catch (error) {
+        alert(error.message || (currentLang === "en" ? "Could not update day." : "Não foi possível atualizar o dia."));
+        dayToggleEl.checked = !dayToggleEl.checked;
+      }
+    });
+  }
+
+  if (addSlotFormEl) {
+    addSlotFormEl.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const startEl = document.getElementById("slot-start");
+      const endEl = document.getElementById("slot-end");
+      const start_time = startEl?.value;
+      const end_time = endEl?.value;
+
+      if (!start_time || !end_time || start_time >= end_time) {
+        alert(currentLang === "en" ? "End time must be after start time." : "O horário de fim deve ser depois do início.");
+        return;
+      }
+
+      const key = formatDateKey(selectedDate);
+      try {
+        await api(`/api/admin/availability/${key}/slots`, {
+          method: "POST",
+          body: JSON.stringify({ start_time, end_time }),
+        });
+        await loadMonthAvailability();
+      } catch (error) {
+        alert(error.message || (currentLang === "en" ? "Could not add time slot." : "Não foi possível adicionar o horário."));
+      }
+    });
+  }
+
+  if (copyNextDayBtn) {
+    copyNextDayBtn.addEventListener("click", async () => {
+      const key = formatDateKey(selectedDate);
+      try {
+        await api(`/api/admin/availability/${key}/copy-next-day`, { method: "POST" });
+        const nextDate = new Date(selectedDate);
+        nextDate.setDate(nextDate.getDate() + 1);
+        selectedDate = nextDate;
+        viewDate = new Date(nextDate.getFullYear(), nextDate.getMonth(), 1);
+        await loadMonthAvailability();
+      } catch (error) {
+        alert(error.message || (currentLang === "en" ? "Could not copy slots." : "Não foi possível copiar os horários."));
+      }
+    });
+  }
+
+  const adminMenuToggle = document.querySelector(".admin-menu-toggle");
+  const adminMobileMenu = document.getElementById("admin-mobile-menu");
+  if (adminMenuToggle && adminMobileMenu) {
+    adminMenuToggle.addEventListener("click", () => {
+      const isOpen = adminMobileMenu.classList.toggle("open");
+      adminMenuToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    adminMobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        adminMobileMenu.classList.remove("open");
+        adminMenuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  loadMonthAvailability();
+}
+
+// Admin Messages
+const messagesContainer = document.getElementById("admin-messages-items");
+
+if (messagesContainer) {
+  const MESSAGES_STORAGE_KEY = "jbAdminMessages";
+  const MESSAGES_SEED = [
+    {
+      id: "msg-1",
+      name: "Maria Clara Silva",
+      email: "maria.clara@email.com",
+      phone: "(11) 98765-4321",
+      subject: "Dúvida sobre Tratamento a Laser",
+      body:
+        "Olá equipe,\n\nAcompanho o trabalho da Dra. Julia pelo Instagram há algum tempo e admiro muito a abordagem natural que ela tem.\n\nGostaria de saber mais informações sobre o tratamento a laser para clareamento de manchas de melasma. Tenho a pele um pouco sensível e gostaria de entender como funciona o pós-procedimento e qual o tempo estimado de recuperação antes de agendar uma consulta presencial.\n\nTambém gostaria de saber se é necessário preparar a pele de alguma forma específica nas semanas anteriores ao tratamento.\n\nAguardo o retorno.\nMuito obrigada,\n\nMaria Clara",
+      status: "new",
+      receivedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+    },
+    {
+      id: "msg-2",
+      name: "João Paulo Mendes",
+      email: "joao.mendes@email.com",
+      phone: "(11) 91234-5678",
+      subject: "Agendamento de Retorno",
+      body:
+        "Bom dia.\n\nGostaria de verificar a disponibilidade de agenda para o meu retorno mensal na próxima semana.\n\nFico no aguardo.\n\nAtenciosamente,\nJoão Paulo",
+      status: "read",
+      receivedAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
+    },
+    {
+      id: "msg-3",
+      name: "Camila Fernandes",
+      email: "camila.fernandes@email.com",
+      phone: "(11) 99876-5432",
+      subject: "Valores de Harmonização",
+      body:
+        "Olá,\n\nPoderiam me enviar um orçamento aproximado para harmonização facial completa?\n\nObrigada,\nCamila",
+      status: "replied",
+      receivedAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
+    },
+  ];
+
+  let messages = loadMessages();
+  let selectedId = null;
+  let currentFilter = "all";
+  let searchTerm = "";
+
+  const detailEmpty = document.getElementById("admin-message-empty");
+  const detailContent = document.getElementById("admin-message-content");
+  const searchInput = document.getElementById("message-search");
+  const filterButtons = document.querySelectorAll(".admin-filter-button");
+  const replyText = document.getElementById("reply-text");
+  const sendReplyBtn = document.getElementById("send-reply-btn");
+  const archiveBtn = document.getElementById("detail-archive-btn");
+  const deleteBtn = document.getElementById("detail-delete-btn");
+  const replyBtn = document.getElementById("detail-reply-btn");
+
+  function loadMessages() {
+    try {
+      const stored = localStorage.getItem(MESSAGES_STORAGE_KEY);
+      if (stored) return JSON.parse(stored);
+    } catch {
+      // Ignore storage errors.
+    }
+    return [...MESSAGES_SEED];
+  }
+
+  function saveMessages() {
+    try {
+      localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      // Ignore storage errors.
+    }
+  }
+
+  function getInitials(name) {
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+  }
+
+  function formatMessageDate(isoString) {
+    const date = new Date(isoString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return currentLang === "en" ? "Just now" : "Agora";
+    if (diffMins < 60) return `${diffMins}min`;
+    if (diffHours < 24) return `${diffHours}h`;
+    if (diffDays === 1) return currentLang === "en" ? "Yesterday" : "Ontem";
+
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(currentLang === "en" ? "en-US" : "pt-BR", options);
+  }
+
+  function getStatusLabel(status) {
+    const labels = {
+      new: currentLang === "en" ? "New" : "Nova",
+      read: currentLang === "en" ? "Read" : "Lida",
+      replied: currentLang === "en" ? "Replied" : "Respondida",
+      archived: currentLang === "en" ? "Archived" : "Arquivada",
+    };
+    return labels[status] || status;
+  }
+
+  function getFilteredMessages() {
+    let result = messages;
+
+    if (currentFilter === "new") {
+      result = result.filter((m) => m.status === "new");
+    } else if (currentFilter === "read") {
+      result = result.filter((m) => m.status === "read");
+    } else if (currentFilter === "replied") {
+      result = result.filter((m) => m.status === "replied");
+    } else if (currentFilter === "archived") {
+      result = result.filter((m) => m.status === "archived");
+    } else {
+      result = result.filter((m) => m.status !== "archived");
+    }
+
+    if (searchTerm.trim()) {
+      const term = searchTerm.toLowerCase();
+      result = result.filter(
+        (m) =>
+          m.name.toLowerCase().includes(term) ||
+          m.email.toLowerCase().includes(term) ||
+          m.subject.toLowerCase().includes(term) ||
+          m.body.toLowerCase().includes(term)
+      );
+    }
+
+    return result.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
+  }
+
+  function renderList() {
+    const filtered = getFilteredMessages();
+    messagesContainer.innerHTML = "";
+
+    if (filtered.length === 0) {
+      messagesContainer.innerHTML = `<div class="admin-empty-state">${
+        currentLang === "en" ? "No messages found." : "Nenhuma mensagem encontrada."
+      }</div>`;
+      return;
+    }
+
+    filtered.forEach((message) => {
+      const item = document.createElement("article");
+      item.className = `admin-message-item ${message.id === selectedId ? "active" : ""}`;
+      item.dataset.id = message.id;
+
+      let statusHtml = "";
+      if (message.status === "new") {
+        statusHtml = `<span class="admin-message-status new">${getStatusLabel("new")}</span>`;
+      } else if (message.status === "replied") {
+        statusHtml = `<span class="admin-message-status replied"><span class="material-symbols-outlined">reply</span>${getStatusLabel("replied")}</span>`;
+      } else {
+        statusHtml = `<span class="admin-message-status read">${getStatusLabel("read")}</span>`;
+      }
+
+      item.innerHTML = `
+        <div class="admin-message-item-top">
+          <span class="admin-message-item-name">${message.name}</span>
+          <span class="admin-message-item-time">${formatMessageDate(message.receivedAt)}</span>
+        </div>
+        <h4 class="admin-message-item-subject">${message.subject}</h4>
+        <p class="admin-message-item-preview">${message.body}</p>
+        ${statusHtml}
+      `;
+
+      item.addEventListener("click", () => selectMessage(message.id));
+      messagesContainer.appendChild(item);
+    });
+  }
+
+  function renderDetail() {
+    const message = messages.find((m) => m.id === selectedId);
+
+    if (!message) {
+      detailEmpty.classList.remove("hidden");
+      detailContent.classList.add("hidden");
+      return;
+    }
+
+    detailEmpty.classList.add("hidden");
+    detailContent.classList.remove("hidden");
+
+    document.getElementById("detail-subject").textContent = message.subject;
+    document.getElementById("detail-avatar").textContent = getInitials(message.name);
+    document.getElementById("detail-name").textContent = message.name;
+    document.getElementById("detail-email").textContent = `<${message.email}>`;
+    document.getElementById("detail-date").textContent = `${
+      currentLang === "en" ? "Received on" : "Recebida em"
+    } ${formatMessageDate(message.receivedAt)}`;
+    document.getElementById("detail-phone").textContent = `${
+      currentLang === "en" ? "Phone" : "Telefone"
+    }: ${message.phone}`;
+    document.getElementById("detail-body").textContent = message.body;
+    replyText.value = "";
+  }
+
+  function selectMessage(id) {
+    selectedId = id;
+    const message = messages.find((m) => m.id === id);
+
+    if (message && message.status === "new") {
+      message.status = "read";
+      saveMessages();
+    }
+
+    renderList();
+    renderDetail();
+  }
+
+  function removeSelected() {
+    selectedId = null;
+    renderList();
+    renderDetail();
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      searchTerm = searchInput.value;
+      renderList();
+    });
+  }
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach((btn) => {
+        btn.classList.remove("active", "button");
+        btn.classList.add("button-outline");
+      });
+      button.classList.remove("button-outline");
+      button.classList.add("active", "button");
+      currentFilter = button.dataset.filter;
+      renderList();
+    });
+  });
+
+  if (sendReplyBtn) {
+    sendReplyBtn.addEventListener("click", () => {
+      const text = replyText?.value.trim();
+      if (!text) return;
+
+      const message = messages.find((m) => m.id === selectedId);
+      if (!message) return;
+
+      message.status = "replied";
+      saveMessages();
+      replyText.value = "";
+      renderList();
+      renderDetail();
+    });
+  }
+
+  if (replyBtn) {
+    replyBtn.addEventListener("click", () => {
+      replyText?.focus();
+    });
+  }
+
+  if (archiveBtn) {
+    archiveBtn.addEventListener("click", () => {
+      const message = messages.find((m) => m.id === selectedId);
+      if (!message) return;
+
+      message.status = "archived";
+      saveMessages();
+      removeSelected();
+    });
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", () => {
+      if (!selectedId) return;
+
+      const confirmed = confirm(
+        currentLang === "en"
+          ? "Are you sure you want to delete this message?"
+          : "Tem certeza de que deseja excluir esta mensagem?"
+      );
+      if (!confirmed) return;
+
+      messages = messages.filter((m) => m.id !== selectedId);
+      saveMessages();
+      removeSelected();
+    });
+  }
+
+  renderList();
+  renderDetail();
 }
 
 const contactForm = document.getElementById("contactForm");
