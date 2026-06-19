@@ -741,6 +741,7 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  margin-top: 8px;
 }
 
 .form-card {
