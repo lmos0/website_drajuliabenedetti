@@ -218,5 +218,98 @@
         </div>
       </main>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="admin-modal-overlay" id="delete-slot-modal" aria-hidden="true">
+      <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="delete-slot-title">
+        <div class="admin-modal-header">
+          <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+          <h3 id="delete-slot-title">Confirmar exclusão</h3>
+        </div>
+        <p class="admin-modal-body">
+          Tem certeza de que deseja remover este horário? Esta ação não pode ser desfeita.
+        </p>
+        <div class="admin-modal-actions">
+          <button class="button-outline" id="delete-slot-cancel" type="button">Cancelar</button>
+          <button class="button admin-button-danger" id="delete-slot-confirm" type="button">Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .admin-modal-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(35, 26, 17, 0.5);
+        z-index: 100;
+        padding: 24px;
+      }
+
+      .admin-modal-overlay.open {
+        display: flex;
+      }
+
+      .admin-modal {
+        width: 100%;
+        max-width: 420px;
+        padding: 28px;
+        background: var(--bg);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow);
+      }
+
+      .admin-modal-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .admin-modal-header .material-symbols-outlined {
+        font-size: 28px;
+        color: var(--error);
+      }
+
+      .admin-modal-header h3 {
+        margin: 0;
+        font-family: "Bodoni Moda", serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .admin-modal-body {
+        margin: 0 0 24px;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .admin-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+      }
+
+      .admin-modal-actions .button,
+      .admin-modal-actions .button-outline {
+        min-height: 42px;
+        padding: 0 20px;
+      }
+
+      .admin-button-danger {
+        background: var(--error);
+        border-color: var(--error);
+        color: var(--white);
+      }
+
+      .admin-button-danger:hover {
+        background: #9c2b22;
+        border-color: #9c2b22;
+      }
+    </style>
   </body>
 </html>

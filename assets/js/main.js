@@ -277,7 +277,8 @@ const pageTranslations = {
     setText("label[for='email']", "Email");
     setText("label[for='phone']", "Phone");
     setAttr("#phone", "placeholder", "+55 11 99999-9999");
-    setAttr("input[name='subject']", "value", "Contact via website");
+    setText("label[for='subject']", "Subject");
+    setAttr("#subject", "placeholder", "What would you like to talk about?");
     setText("label[for='message']", "Message");
     setAttr("#message", "placeholder", "How can we help?");
     setText(".form-card button", "Send Message");
@@ -454,6 +455,9 @@ if (adminCalendarGrid) {
   const copyNextDayBtn = document.getElementById("copy-next-day");
   const prevMonthBtn = document.getElementById("prev-month");
   const nextMonthBtn = document.getElementById("next-month");
+  const deleteSlotModal = document.getElementById("delete-slot-modal");
+  const deleteSlotCancel = document.getElementById("delete-slot-cancel");
+  const deleteSlotConfirm = document.getElementById("delete-slot-confirm");
 
   const WEEKDAYS = [
     "Domingo",
@@ -483,6 +487,27 @@ if (adminCalendarGrid) {
   let selectedDate = new Date();
   let availabilityByDate = {};
   let isLoading = false;
+  let pendingDeleteSlotId = null;
+  let pendingDeleteDateKey = null;
+
+  function openDeleteModal(slotId, dateKey) {
+    pendingDeleteSlotId = slotId;
+    pendingDeleteDateKey = dateKey;
+    if (deleteSlotModal) {
+      deleteSlotModal.classList.add("open");
+      deleteSlotModal.setAttribute("aria-hidden", "false");
+      deleteSlotConfirm?.focus();
+    }
+  }
+
+  function closeDeleteModal() {
+    pendingDeleteSlotId = null;
+    pendingDeleteDateKey = null;
+    if (deleteSlotModal) {
+      deleteSlotModal.classList.remove("open");
+      deleteSlotModal.setAttribute("aria-hidden", "true");
+    }
+  }
 
   function formatDateKey(date) {
     const y = date.getFullYear();
@@ -658,15 +683,36 @@ if (adminCalendarGrid) {
     });
 
     slotsContainerEl.querySelectorAll(".admin-slot-delete").forEach((btn) => {
-      btn.addEventListener("click", async () => {
+      btn.addEventListener("click", () => {
         const slotId = btn.dataset.id;
-        try {
-          await api(`/api/admin/availability/${key}/slots/${slotId}`, { method: "DELETE" });
-          await loadMonthAvailability();
-        } catch (error) {
-          alert(error.message || (currentLang === "en" ? "Could not remove time slot." : "Não foi possível remover o horário."));
-        }
+        openDeleteModal(slotId, key);
       });
+    });
+  }
+
+  if (deleteSlotCancel) {
+    deleteSlotCancel.addEventListener("click", closeDeleteModal);
+  }
+
+  if (deleteSlotConfirm) {
+    deleteSlotConfirm.addEventListener("click", async () => {
+      if (!pendingDeleteSlotId || !pendingDeleteDateKey) return;
+
+      try {
+        await api(`/api/admin/availability/${pendingDeleteDateKey}/slots/${pendingDeleteSlotId}`, { method: "DELETE" });
+        closeDeleteModal();
+        await loadMonthAvailability();
+      } catch (error) {
+        alert(error.message || (currentLang === "en" ? "Could not remove time slot." : "Não foi possível remover o horário."));
+      }
+    });
+  }
+
+  if (deleteSlotModal) {
+    deleteSlotModal.addEventListener("click", (event) => {
+      if (event.target === deleteSlotModal) {
+        closeDeleteModal();
+      }
     });
   }
 
@@ -765,44 +811,7 @@ if (adminCalendarGrid) {
 const messagesContainer = document.getElementById("admin-messages-items");
 
 if (messagesContainer) {
-  const MESSAGES_STORAGE_KEY = "jbAdminMessages";
-  const MESSAGES_SEED = [
-    {
-      id: "msg-1",
-      name: "Maria Clara Silva",
-      email: "maria.clara@email.com",
-      phone: "(11) 98765-4321",
-      subject: "Dúvida sobre Tratamento a Laser",
-      body:
-        "Olá equipe,\n\nAcompanho o trabalho da Dra. Julia pelo Instagram há algum tempo e admiro muito a abordagem natural que ela tem.\n\nGostaria de saber mais informações sobre o tratamento a laser para clareamento de manchas de melasma. Tenho a pele um pouco sensível e gostaria de entender como funciona o pós-procedimento e qual o tempo estimado de recuperação antes de agendar uma consulta presencial.\n\nTambém gostaria de saber se é necessário preparar a pele de alguma forma específica nas semanas anteriores ao tratamento.\n\nAguardo o retorno.\nMuito obrigada,\n\nMaria Clara",
-      status: "new",
-      receivedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-    },
-    {
-      id: "msg-2",
-      name: "João Paulo Mendes",
-      email: "joao.mendes@email.com",
-      phone: "(11) 91234-5678",
-      subject: "Agendamento de Retorno",
-      body:
-        "Bom dia.\n\nGostaria de verificar a disponibilidade de agenda para o meu retorno mensal na próxima semana.\n\nFico no aguardo.\n\nAtenciosamente,\nJoão Paulo",
-      status: "read",
-      receivedAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
-    },
-    {
-      id: "msg-3",
-      name: "Camila Fernandes",
-      email: "camila.fernandes@email.com",
-      phone: "(11) 99876-5432",
-      subject: "Valores de Harmonização",
-      body:
-        "Olá,\n\nPoderiam me enviar um orçamento aproximado para harmonização facial completa?\n\nObrigada,\nCamila",
-      status: "replied",
-      receivedAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
-    },
-  ];
-
-  let messages = loadMessages();
+  let messages = [];
   let selectedId = null;
   let currentFilter = "all";
   let searchTerm = "";
@@ -817,28 +826,34 @@ if (messagesContainer) {
   const deleteBtn = document.getElementById("detail-delete-btn");
   const replyBtn = document.getElementById("detail-reply-btn");
 
-  function loadMessages() {
+  async function loadMessages() {
     try {
-      const stored = localStorage.getItem(MESSAGES_STORAGE_KEY);
-      if (stored) return JSON.parse(stored);
-    } catch {
-      // Ignore storage errors.
+      const data = await api("/api/admin/contact-messages");
+      messages = Array.isArray(data) ? data.map(mapMessage) : [];
+    } catch (error) {
+      console.error("Erro ao carregar mensagens:", error);
+      messagesContainer.innerHTML = `<div class="admin-empty-state">${
+        currentLang === "en" ? "Could not load messages." : "Não foi possível carregar as mensagens."
+      }</div>`;
+      return;
     }
-    return [...MESSAGES_SEED];
+
+    renderList();
+    renderDetail();
   }
 
-  function saveMessages() {
-    try {
-      localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(messages));
-    } catch {
-      // Ignore storage errors.
-    }
+  function mapMessage(message) {
+    return {
+      ...message,
+      receivedAt: message.created_at || message.receivedAt,
+    };
   }
 
   function getInitials(name) {
     return name
       .split(" ")
       .map((part) => part[0])
+      .filter(Boolean)
       .slice(0, 2)
       .join("")
       .toUpperCase();
@@ -927,11 +942,11 @@ if (messagesContainer) {
 
       item.innerHTML = `
         <div class="admin-message-item-top">
-          <span class="admin-message-item-name">${message.name}</span>
+          <span class="admin-message-item-name">${escapeHtml(message.name)}</span>
           <span class="admin-message-item-time">${formatMessageDate(message.receivedAt)}</span>
         </div>
-        <h4 class="admin-message-item-subject">${message.subject}</h4>
-        <p class="admin-message-item-preview">${message.body}</p>
+        <h4 class="admin-message-item-subject">${escapeHtml(message.subject)}</h4>
+        <p class="admin-message-item-preview">${escapeHtml(message.body)}</p>
         ${statusHtml}
       `;
 
@@ -961,18 +976,53 @@ if (messagesContainer) {
     } ${formatMessageDate(message.receivedAt)}`;
     document.getElementById("detail-phone").textContent = `${
       currentLang === "en" ? "Phone" : "Telefone"
-    }: ${message.phone}`;
+    }: ${message.phone || (currentLang === "en" ? "Not provided" : "Não informado")}`;
     document.getElementById("detail-body").textContent = message.body;
-    replyText.value = "";
+    if (replyText) replyText.value = "";
   }
 
-  function selectMessage(id) {
+  async function updateMessageStatus(id, status) {
+    try {
+      await api(`/api/admin/contact-messages/${id}/status`, {
+        method: "PUT",
+        body: JSON.stringify({ status }),
+      });
+      return true;
+    } catch (error) {
+      const isNotFound = error.message && error.message.toLowerCase().includes("not found");
+      if (isNotFound) {
+        alert(`O endpoint PUT /api/admin/contact-messages/{id}/status ainda não está disponível no backend.`);
+      } else {
+        alert(error.message || "Não foi possível atualizar a mensagem.");
+      }
+      return false;
+    }
+  }
+
+  async function deleteMessage(id) {
+    try {
+      await api(`/api/admin/contact-messages/${id}`, { method: "DELETE" });
+      return true;
+    } catch (error) {
+      const isNotFound = error.message && error.message.toLowerCase().includes("not found");
+      if (isNotFound) {
+        alert(`O endpoint DELETE /api/admin/contact-messages/{id} ainda não está disponível no backend.`);
+      } else {
+        alert(error.message || "Não foi possível excluir a mensagem.");
+      }
+      return false;
+    }
+  }
+
+  async function selectMessage(id) {
     selectedId = id;
     const message = messages.find((m) => m.id === id);
 
     if (message && message.status === "new") {
-      message.status = "read";
-      saveMessages();
+      const updated = await updateMessageStatus(message.id, "read");
+      if (updated) {
+        message.status = "read";
+      }
     }
 
     renderList();
@@ -983,6 +1033,16 @@ if (messagesContainer) {
     selectedId = null;
     renderList();
     renderDetail();
+  }
+
+  function escapeHtml(text) {
+    if (!text) return "";
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   if (searchInput) {
@@ -1006,18 +1066,20 @@ if (messagesContainer) {
   });
 
   if (sendReplyBtn) {
-    sendReplyBtn.addEventListener("click", () => {
+    sendReplyBtn.addEventListener("click", async () => {
       const text = replyText?.value.trim();
       if (!text) return;
 
       const message = messages.find((m) => m.id === selectedId);
       if (!message) return;
 
-      message.status = "replied";
-      saveMessages();
-      replyText.value = "";
-      renderList();
-      renderDetail();
+      const updated = await updateMessageStatus(message.id, "replied");
+      if (updated) {
+        message.status = "replied";
+        replyText.value = "";
+        renderList();
+        renderDetail();
+      }
     });
   }
 
@@ -1028,18 +1090,20 @@ if (messagesContainer) {
   }
 
   if (archiveBtn) {
-    archiveBtn.addEventListener("click", () => {
+    archiveBtn.addEventListener("click", async () => {
       const message = messages.find((m) => m.id === selectedId);
       if (!message) return;
 
-      message.status = "archived";
-      saveMessages();
-      removeSelected();
+      const updated = await updateMessageStatus(message.id, "archived");
+      if (updated) {
+        message.status = "archived";
+        removeSelected();
+      }
     });
   }
 
   if (deleteBtn) {
-    deleteBtn.addEventListener("click", () => {
+    deleteBtn.addEventListener("click", async () => {
       if (!selectedId) return;
 
       const confirmed = confirm(
@@ -1049,14 +1113,15 @@ if (messagesContainer) {
       );
       if (!confirmed) return;
 
-      messages = messages.filter((m) => m.id !== selectedId);
-      saveMessages();
-      removeSelected();
+      const deleted = await deleteMessage(selectedId);
+      if (deleted) {
+        messages = messages.filter((m) => m.id !== selectedId);
+        removeSelected();
+      }
     });
   }
 
-  renderList();
-  renderDetail();
+  loadMessages();
 }
 
 const contactForm = document.getElementById("contactForm");
@@ -1071,15 +1136,14 @@ if (contactForm) {
     const name = formData.get("name");
     const email = formData.get("email");
     const phone = formData.get("phone");
+    const subject = formData.get("subject");
     const message = formData.get("message");
     const payload = {
+      name,
       email,
-      subject: formData.get("subject"),
-      telephone: phone,
-      message:
-        currentLang === "en"
-          ? `${name} (${email} / ${phone}) sent: ${message}`
-          : `${name} (${email} / ${phone}) enviou: ${message}`,
+      phone,
+      subject: subject && subject.trim() ? subject.trim() : "Contato via Site",
+      body: message,
     };
 
     if (formStatus) {
