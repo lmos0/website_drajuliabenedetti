@@ -83,20 +83,6 @@
 
               <div class="contact-details">
                 <div class="detail">
-                  <div class="detail-icon">⌖</div>
-                  <div>
-                    <h3>Clínica</h3>
-                    <div class="muted">
-                      Av. República do Líbano, 251
-                      <br />
-                      Jardim Paulista, São Paulo - SP
-                      <br />
-                      04501-000
-                    </div>
-                  </div>
-                </div>
-
-                <div class="detail">
                   <div class="detail-icon">✉</div>
                   <div>
                     <h3>Email</h3>
@@ -129,7 +115,7 @@
 
             <div>
               <div class="form-card">
-                <form id="contactForm" data-endpoint="http://localhost:5001/api/forms">
+                <form id="contactForm" data-endpoint="http://localhost:8082/api/contact">
                   <div class="form-grid">
                     <div class="field">
                       <label for="name">Nome Completo</label>
@@ -148,7 +134,10 @@
                       </div>
                     </div>
 
-                    <input type="hidden" name="subject" value="Contato via site" />
+                    <div class="field">
+                      <label for="subject">Assunto</label>
+                      <input id="subject" name="subject" type="text" placeholder="Sobre o que deseja falar?" />
+                    </div>
 
                     <div class="field">
                       <label for="message">Mensagem</label>
@@ -161,9 +150,6 @@
                 </form>
               </div>
 
-              <div class="map-card" aria-hidden="true">
-                <span class="map-pin"></span>
-              </div>
             </div>
           </div>
         </section>
