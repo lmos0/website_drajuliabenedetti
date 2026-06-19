@@ -25,8 +25,10 @@ const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.getElementById("mobile-menu");
 
 const pageName = (() => {
-  const file = window.location.pathname.split("/").pop() || "index.html";
-  return file === "" ? "index.html" : file;
+  let file = window.location.pathname.split("/").pop() || "index.html";
+  if (file === "") file = "index.html";
+  if (!file.endsWith(".html")) file += ".html";
+  return file;
 })();
 
 const withEnglish = (href) => {
