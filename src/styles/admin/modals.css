@@ -1,0 +1,88 @@
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(35, 26, 17, 0.5);
+  z-index: 100;
+  padding: 24px;
+}
+
+.admin-modal-overlay.open {
+  display: flex;
+}
+
+.admin-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100vh - 48px);
+  padding: 28px;
+  overflow-y: auto;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+.admin-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-modal-header .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.admin-modal-header .material-symbols-outlined.error {
+  color: var(--error);
+}
+
+.admin-modal-header .material-symbols-outlined.warning {
+  color: #eab308;
+}
+
+.admin-modal-header .material-symbols-outlined.primary {
+  color: var(--primary);
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-modal-body {
+  margin: 0 0 24px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.admin-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.admin-modal-actions .button,
+.admin-modal-actions .button-outline,
+.admin-modal-actions .admin-button-danger {
+  min-height: 42px;
+  padding: 0 20px;
+}
+
+.admin-button-danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--white);
+}
+
+.admin-button-danger:hover {
+  background: #9c2b22;
+  border-color: #9c2b22;
+}
