@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-api-base="http://localhost:8082">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,8 +15,14 @@
       href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <script src="assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="src/styles/tokens.css" />
+    <link rel="stylesheet" href="src/styles/reset.css" />
+    <link rel="stylesheet" href="src/styles/typography.css" />
+    <link rel="stylesheet" href="src/styles/buttons.css" />
+    <link rel="stylesheet" href="src/styles/header.css" />
+    <link rel="stylesheet" href="src/styles/footer.css" />
+    <link rel="stylesheet" href="src/styles/pages/treatments.css" />
+    <script type="module" src="src/pages/tratamento.js"></script>
   </head>
   <body>
     <div class="page-shell">
@@ -50,7 +56,7 @@
                 <a class="language-option" href="tratamento.html?lang=en" lang="en" aria-label="English">EN</a>
               </div>
             </div>
-            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu">
               ☰
             </button>
           </div>
@@ -90,9 +96,9 @@
 
         <section class="section">
           <div class="container">
-            <div style="text-align: center;">
+            <div class="section-header">
               <h2 class="section-title">Áreas de cuidado</h2>
-              <p class="eyebrow" style="color: var(--muted);">Pele · Cabelo · Unhas</p>
+              <p class="eyebrow eyebrow-muted">Pele · Cabelo · Unhas</p>
             </div>
 
             <div class="treatment-cards">
@@ -172,7 +178,7 @@
         <section class="tech-panel" id="tecnologia">
           <div class="container tech-grid">
             <div class="panel-image panel-image-tech">
-              <img src="assets/images/treatments/treatment-tech.jpeg" alt="Close do equipamento dermatológico utilizado pela Dra. Julia Benedetti." />
+              <img src="assets/images/treatments/treatment-tech.jpeg" alt="Close do equipamento dermatológico utilizado pela Dra. Julia Benedetti." loading="lazy" />
             </div>
 
             <div class="about-copy">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-api-base="http://localhost:8082">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,8 +15,14 @@
       href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <script src="assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="src/styles/tokens.css" />
+    <link rel="stylesheet" href="src/styles/reset.css" />
+    <link rel="stylesheet" href="src/styles/typography.css" />
+    <link rel="stylesheet" href="src/styles/buttons.css" />
+    <link rel="stylesheet" href="src/styles/header.css" />
+    <link rel="stylesheet" href="src/styles/footer.css" />
+    <link rel="stylesheet" href="src/styles/pages/home.css" />
+    <script type="module" src="src/pages/home.js"></script>
   </head>
   <body>
     <div class="page-shell">
@@ -50,7 +56,7 @@
                 <a class="language-option" href="index.html?lang=en" lang="en" aria-label="English">EN</a>
               </div>
             </div>
-            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu">
               ☰
             </button>
           </div>
@@ -97,7 +103,7 @@
             </div>
 
             <div class="image-frame">
-              <img src="assets/images/home/home-hero.jpeg" alt="Dra. Julia Benedetti em retrato editorial." />
+              <img src="assets/images/home/home-hero.jpeg" alt="Dra. Julia Benedetti em retrato editorial." fetchpriority="high" />
             </div>
           </div>
         </section>
@@ -105,7 +111,7 @@
         <section class="section section-alt">
           <div class="container specialist-grid">
             <div class="small-image">
-              <img src="assets/images/home/home-specialist.jpeg" alt="Dra. Julia Benedetti sorrindo no consultório." />
+              <img src="assets/images/home/home-specialist.jpeg" alt="Dra. Julia Benedetti sorrindo no consultório." loading="lazy" />
             </div>
 
             <div>
@@ -126,7 +132,7 @@
 
         <section class="section">
           <div class="container">
-            <div style="text-align: center;">
+            <div class="section-header">
               <p class="eyebrow">Cuidado</p>
               <h2 class="section-title">Principais frentes de atendimento</h2>
             </div>
@@ -168,7 +174,7 @@
         <section class="section">
           <div class="container">
             <div class="feature-image">
-              <img src="assets/images/home/home-ambient.jpeg" alt="Dra. Julia Benedetti em ambiente acolhedor na clínica." />
+              <img src="assets/images/home/home-ambient.jpeg" alt="Dra. Julia Benedetti em ambiente acolhedor na clínica." loading="lazy" />
               <div class="overlay-card">
                 <p class="eyebrow">O ambiente</p>
                 <h3 class="card-title">Um espaço para ser ouvido com calma</h3>
@@ -183,7 +189,7 @@
 
         <section class="section section-alt">
           <div class="container">
-            <div style="text-align: center;">
+            <div class="section-header">
               <p class="eyebrow">Atuação</p>
               <h2 class="section-title">Cuidado dermatológico em diferentes frentes</h2>
             </div>

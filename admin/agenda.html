@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-api-base="http://localhost:8082">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,8 +20,14 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/styles.css" />
-    <script src="../assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="../src/styles/tokens.css" />
+    <link rel="stylesheet" href="../src/styles/reset.css" />
+    <link rel="stylesheet" href="../src/styles/typography.css" />
+    <link rel="stylesheet" href="../src/styles/buttons.css" />
+    <link rel="stylesheet" href="../src/styles/form.css" />
+    <link rel="stylesheet" href="../src/styles/admin/dashboard.css" />
+    <link rel="stylesheet" href="../src/styles/admin/agenda.css" />
+    <script type="module" src="../src/admin/agenda.js"></script>
   </head>
   <body class="admin-body">
     <div class="admin-dashboard">
@@ -236,80 +242,5 @@
       </div>
     </div>
 
-    <style>
-      .admin-modal-overlay {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: rgba(35, 26, 17, 0.5);
-        z-index: 100;
-        padding: 24px;
-      }
-
-      .admin-modal-overlay.open {
-        display: flex;
-      }
-
-      .admin-modal {
-        width: 100%;
-        max-width: 420px;
-        padding: 28px;
-        background: var(--bg);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow);
-      }
-
-      .admin-modal-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 16px;
-      }
-
-      .admin-modal-header .material-symbols-outlined {
-        font-size: 28px;
-        color: var(--error);
-      }
-
-      .admin-modal-header h3 {
-        margin: 0;
-        font-family: "Bodoni Moda", serif;
-        font-size: 1.4rem;
-        font-weight: 500;
-        color: var(--text);
-      }
-
-      .admin-modal-body {
-        margin: 0 0 24px;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--muted);
-      }
-
-      .admin-modal-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-      }
-
-      .admin-modal-actions .button,
-      .admin-modal-actions .button-outline {
-        min-height: 42px;
-        padding: 0 20px;
-      }
-
-      .admin-button-danger {
-        background: var(--error);
-        border-color: var(--error);
-        color: var(--white);
-      }
-
-      .admin-button-danger:hover {
-        background: #9c2b22;
-        border-color: #9c2b22;
-      }
-    </style>
   </body>
 </html>

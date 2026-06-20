@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-api-base="http://localhost:8082">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,8 +15,14 @@
       href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <script src="assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="src/styles/tokens.css" />
+    <link rel="stylesheet" href="src/styles/reset.css" />
+    <link rel="stylesheet" href="src/styles/typography.css" />
+    <link rel="stylesheet" href="src/styles/buttons.css" />
+    <link rel="stylesheet" href="src/styles/header.css" />
+    <link rel="stylesheet" href="src/styles/footer.css" />
+    <link rel="stylesheet" href="src/styles/pages/about.css" />
+    <script type="module" src="src/pages/sobre.js"></script>
   </head>
   <body>
     <div class="page-shell">
@@ -50,7 +56,7 @@
                 <a class="language-option" href="sobre.html?lang=en" lang="en" aria-label="English">EN</a>
               </div>
             </div>
-            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu">
               ☰
             </button>
           </div>
@@ -79,7 +85,7 @@
 
             <div class="about-copy">
               <h1 class="section-title">Cuidar da pele é cuidar da saúde</h1>
-              <p class="eyebrow" style="margin-top: -4px;">Dra. Julia Benedetti</p>
+              <p class="eyebrow about-eyebrow">Dra. Julia Benedetti</p>
               <p>
                 A pele fala sobre hábitos, ambiente, genética, fases da vida e
                 saúde. Por isso, o cuidado dermatológico precisa ir além da queixa
@@ -103,7 +109,7 @@
 
         <section class="section section-alt">
           <div class="container">
-            <div style="text-align: center; margin-bottom: 42px;">
+            <div class="section-header">
               <p class="eyebrow">Formação</p>
               <h2 class="section-title">Trajetória Acadêmica</h2>
             </div>
@@ -138,8 +144,8 @@
         </section>
 
         <section class="section">
-          <div class="container" style="margin-bottom: 72px;">
-            <div style="text-align: center; margin-bottom: 42px;">
+          <div class="container section-container">
+            <div class="section-header">
               <p class="eyebrow">Vivência Clínica</p>
               <h2 class="section-title">Experiência Profissional</h2>
             </div>
@@ -199,7 +205,7 @@
             </div>
 
             <div class="panel-image">
-              <img src="assets/images/about/about-philosophy.jpeg" alt="Dra. Julia Benedetti em retrato com fundo claro." />
+              <img src="assets/images/about/about-philosophy.jpeg" alt="Dra. Julia Benedetti em retrato com fundo claro." loading="lazy" />
             </div>
           </div>
         </section>

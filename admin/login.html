@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-api-base="http://localhost:8082">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,16 +16,22 @@
       href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/css/styles.css" />
-    <script src="../assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="../src/styles/tokens.css" />
+    <link rel="stylesheet" href="../src/styles/reset.css" />
+    <link rel="stylesheet" href="../src/styles/typography.css" />
+    <link rel="stylesheet" href="../src/styles/buttons.css" />
+    <link rel="stylesheet" href="../src/styles/form.css" />
+    <link rel="stylesheet" href="../src/styles/admin/login.css" />
+    <script type="module" src="../src/admin/login.js"></script>
   </head>
   <body class="admin-body">
     <div class="admin-login">
       <div class="admin-login-image" aria-hidden="true">
-        <img
-          src="../assets/images/home/home-hero.jpeg"
-          alt="Dra. Julia Benedetti em retrato editorial."
-        />
+          <img
+            src="../assets/images/home/home-hero.jpeg"
+            alt="Dra. Julia Benedetti em retrato editorial."
+            loading="lazy"
+          />
         <div class="admin-login-overlay"></div>
       </div>
 
@@ -37,7 +43,7 @@
             <p>Área Administrativa</p>
           </div>
 
-          <form id="adminLoginForm" class="admin-login-fields" data-endpoint="http://localhost:8082/api/admin/auth/login" data-redirect="agenda.html" novalidate>
+          <form id="adminLoginForm" class="admin-login-fields" data-redirect="agenda.html" novalidate>
             <div class="field">
               <label for="admin-email">E-mail</label>
               <input
