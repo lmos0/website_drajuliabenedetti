@@ -1,0 +1,48 @@
+.button,
+.button-outline,
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: var(--radius-sm);
+  transition: 180ms ease;
+  cursor: pointer;
+  font-size: 0.82rem;
+  width: 100%;
+}
+
+.button,
+.header-cta {
+  background: var(--primary);
+  color: var(--white);
+  border: 1px solid var(--primary);
+}
+
+.button:hover,
+.header-cta:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.button-outline {
+  color: var(--primary);
+  border: 1px solid rgba(125, 86, 45, 0.34);
+  background: transparent;
+}
+
+.button-outline:hover {
+  background: rgba(125, 86, 45, 0.06);
+}
+
+@media (min-width: 981px) {
+  .button,
+  .button-outline,
+  .header-cta {
+    min-height: 54px;
+    padding: 0 28px;
+    width: auto;
+  }
+}

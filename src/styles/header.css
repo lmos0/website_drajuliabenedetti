@@ -1,0 +1,249 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 248, 244, 0.88);
+  border-bottom: 1px solid rgba(125, 86, 45, 0.08);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 74px;
+  gap: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "Bodoni Moda", serif;
+  color: var(--primary);
+}
+
+.brand-mark {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.nav {
+  display: none;
+}
+
+.nav a,
+.header-cta {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.nav a {
+  position: relative;
+  color: var(--muted);
+}
+
+.nav a.active,
+.nav a:hover {
+  color: var(--primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-actions .header-cta {
+  display: none;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-icon {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(125, 86, 45, 0.56);
+  opacity: 0.72;
+}
+
+.language-icon::before,
+.language-icon::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border-left: 1px solid rgba(125, 86, 45, 0.56);
+  border-right: 1px solid rgba(125, 86, 45, 0.56);
+}
+
+.language-icon::after {
+  inset: 8px 2px auto;
+  height: 0;
+  border: 0;
+  border-top: 1px solid rgba(125, 86, 45, 0.56);
+}
+
+.language-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.language-option {
+  position: relative;
+  color: rgba(80, 69, 59, 0.62);
+  transition: 180ms ease;
+}
+
+.language-option:hover,
+.language-option.active {
+  color: var(--primary);
+}
+
+.language-option.active {
+  font-weight: 600;
+}
+
+.language-option.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0.2em;
+  bottom: -5px;
+  height: 1px;
+  background: rgba(125, 86, 45, 0.48);
+}
+
+.language-divider {
+  color: rgba(80, 69, 59, 0.26);
+  font-weight: 300;
+}
+
+.menu-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(125, 86, 45, 0.18);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  border-top: 1px solid rgba(125, 86, 45, 0.08);
+  padding: 0 12px 18px;
+  background: rgba(255, 248, 244, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.mobile-menu.open {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mobile-menu > a {
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 0;
+}
+
+.mobile-menu > a:last-child {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  min-height: 46px;
+  width: 100%;
+  padding: 0 16px;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+@media (min-width: 641px) {
+  .brand-mark {
+    font-size: 2rem;
+  }
+
+  .menu-toggle {
+    width: 46px;
+    height: 46px;
+  }
+
+  .mobile-menu {
+    padding: 0 24px 24px;
+  }
+
+  .mobile-menu > a:last-child {
+    width: fit-content;
+    max-width: 100%;
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: auto;
+    text-align: left;
+  }
+
+  .language-options {
+    font-size: 0.68rem;
+  }
+}
+
+@media (min-width: 981px) {
+  .site-header .container {
+    min-height: 88px;
+    gap: 28px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+  }
+
+  .nav a.active::after,
+  .nav a:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .header-actions {
+    gap: 20px;
+  }
+
+  .header-actions .header-cta {
+    display: inline-flex;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+}
