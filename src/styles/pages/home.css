@@ -1,0 +1,276 @@
+.hero {
+  padding: 56px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.hero-copy {
+  max-width: none;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.hero-actions .button {
+  width: 100%;
+}
+
+.image-frame {
+  position: relative;
+  order: -1;
+}
+
+.image-frame::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  bottom: -8px;
+  width: 28px;
+  height: 28px;
+  border-left: 1px solid rgba(125, 86, 45, 0.2);
+  border-bottom: 1px solid rgba(125, 86, 45, 0.2);
+  border-radius: 0 0 0 10px;
+}
+
+.image-frame img {
+  width: 100%;
+  aspect-ratio: 0.86;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+.section {
+  padding: 56px 0;
+}
+
+.section-alt {
+  background: linear-gradient(180deg, rgba(253, 235, 220, 0.78), rgba(253, 235, 220, 0.58));
+  padding: 56px 0;
+}
+
+.specialist-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.small-image {
+  order: -1;
+}
+
+.small-image img {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 0.92;
+  object-fit: cover;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.card {
+  padding: 22px 18px;
+  background: rgba(253, 235, 220, 0.62);
+  border: 1px solid rgba(125, 86, 45, 0.08);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+.card-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  background: rgba(212, 163, 115, 0.14);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 1.55rem;
+  font-weight: 500;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: var(--primary);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.feature-image {
+  position: relative;
+  margin-top: 0;
+}
+
+.feature-image img {
+  width: 100%;
+  aspect-ratio: 1.02;
+  min-height: 360px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+.overlay-card {
+  position: static;
+  margin-top: 20px;
+  max-width: none;
+  padding: 22px 20px;
+  background: rgba(255, 248, 244, 0.92);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+.quote-section {
+  text-align: center;
+}
+
+.quote-mark {
+  margin-bottom: 16px;
+  color: rgba(125, 86, 45, 0.35);
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.quote-text {
+  max-width: 780px;
+  margin: 0 auto 28px;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.quote-author {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+@media (min-width: 641px) {
+  .hero {
+    padding-top: 42px;
+    padding-bottom: 88px;
+  }
+
+  .hero-actions .button {
+    width: auto;
+  }
+
+  .image-frame {
+    order: 0;
+  }
+
+  .image-frame::before {
+    left: -12px;
+    bottom: -12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .image-frame img {
+    aspect-ratio: 0.88;
+  }
+
+  .section,
+  .section-alt {
+    padding: 110px 0;
+  }
+
+  .small-image {
+    order: 0;
+  }
+
+  .small-image img {
+    max-width: 360px;
+  }
+
+  .cards {
+    margin-top: 42px;
+  }
+
+  .card {
+    padding: 28px;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+  }
+
+  .feature-image {
+    margin-top: 32px;
+  }
+
+  .feature-image img {
+    aspect-ratio: 1.58;
+    min-height: auto;
+  }
+
+  .overlay-card {
+    padding: 30px;
+  }
+}
+
+@media (min-width: 981px) {
+  .hero {
+    padding: 74px 0 110px;
+  }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.95fr);
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hero-copy {
+    max-width: 460px;
+  }
+
+  .hero-actions {
+    margin-top: 34px;
+  }
+
+  .specialist-grid {
+    grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1fr);
+    gap: 72px;
+    align-items: center;
+  }
+
+  .cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .overlay-card {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    max-width: 380px;
+    margin-top: 0;
+  }
+}
+
+.section-header {
+  text-align: center;
+}
