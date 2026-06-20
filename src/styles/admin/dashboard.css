@@ -1,5 +1,6 @@
 .admin-dashboard {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
@@ -15,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 16px 24px;
   background: var(--bg-alt);
   border-bottom: 1px solid var(--line);
@@ -42,14 +44,15 @@
 
 .admin-mobile-menu {
   display: none;
-  position: fixed;
-  inset: 74px 0 auto;
+  position: sticky;
+  top: 73px;
   flex-direction: column;
   gap: 8px;
   padding: 16px 24px 24px;
   background: var(--bg-alt);
   border-bottom: 1px solid var(--line);
   z-index: 15;
+  box-shadow: 0 12px 30px rgba(80, 69, 59, 0.08);
 }
 
 .admin-mobile-menu.open {
@@ -58,13 +61,28 @@
 
 .admin-content {
   flex: 1;
+  width: 100%;
   min-width: 0;
   margin-left: 0;
   padding: 24px 24px 64px;
 }
 
+@media (min-width: 641px) {
+  .admin-content {
+    padding: 32px 40px 64px;
+  }
+}
+
 @media (min-width: 981px) {
+  .admin-dashboard {
+    flex-direction: row;
+  }
+
   .admin-mobile-bar {
+    display: none;
+  }
+
+  .admin-mobile-menu {
     display: none;
   }
 
@@ -88,6 +106,7 @@
   }
 
   .admin-content {
+    width: auto;
     margin-left: 260px;
     padding: 48px 80px 80px;
   }

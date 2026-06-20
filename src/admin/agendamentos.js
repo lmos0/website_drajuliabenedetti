@@ -2,6 +2,7 @@ import { api } from "../services/api.js";
 import { escapeHtml } from "../utils/sanitize.js";
 import { MONTHS } from "../utils/date.js";
 import { initAdminMenuToggle } from "../components/menu-toggle.js";
+import { showErrorModal } from "../utils/modal.js";
 
 import { debounce } from "../utils/debounce.js";
 import { getInitials } from "../utils/string.js";
@@ -170,7 +171,7 @@ if (appointmentsContainer) {
       await api(endpoint, { method: "PUT" });
       await loadAppointments();
     } catch (error) {
-      alert(error.message || "Não foi possível atualizar o agendamento.");
+      showErrorModal(error.message || "Não foi possível atualizar o agendamento.");
     }
   }
 

@@ -2,6 +2,7 @@ import { api } from "../services/api.js";
 import { escapeHtml } from "../utils/sanitize.js";
 import { formatDateKey, isSameDay, MONTHS, WEEKDAYS } from "../utils/date.js";
 import { initAdminMenuToggle } from "../components/menu-toggle.js";
+import { showConfirmModal, showErrorModal, showWarningModal } from "../utils/modal.js";
 
 initAdminMenuToggle();
 
@@ -18,37 +19,13 @@ if (adminCalendarGrid) {
   const copyNextDayBtn = document.getElementById("copy-next-day");
   const prevMonthBtn = document.getElementById("prev-month");
   const nextMonthBtn = document.getElementById("next-month");
-  const deleteSlotModal = document.getElementById("delete-slot-modal");
-  const deleteSlotCancel = document.getElementById("delete-slot-cancel");
-  const deleteSlotConfirm = document.getElementById("delete-slot-confirm");
 
   let viewDate = new Date();
   let selectedDate = new Date();
   let availabilityByDate = {};
   let isLoading = false;
-  let pendingDeleteSlotId = null;
-  let pendingDeleteDateKey = null;
   let monthController = null;
   let detailController = null;
-
-  function openDeleteModal(slotId, dateKey) {
-    pendingDeleteSlotId = slotId;
-    pendingDeleteDateKey = dateKey;
-    if (deleteSlotModal) {
-      deleteSlotModal.classList.add("open");
-      deleteSlotModal.setAttribute("aria-hidden", "false");
-      deleteSlotConfirm?.focus();
-    }
-  }
-
-  function closeDeleteModal() {
-    pendingDeleteSlotId = null;
-    pendingDeleteDateKey = null;
-    if (deleteSlotModal) {
-      deleteSlotModal.classList.remove("open");
-      deleteSlotModal.setAttribute("aria-hidden", "true");
-    }
-  }
 
   function getDayData(key) {
     return availabilityByDate[key] || { is_available: true, slots: [] };
@@ -76,7 +53,7 @@ if (adminCalendarGrid) {
     } catch (error) {
       if (error.name === "AbortError") return;
       console.error("Erro ao carregar disponibilidade:", error);
-      alert("Não foi possível carregar a disponibilidade.");
+      showErrorModal("Não foi possível carregar a disponibilidade.");
     } finally {
       isLoading = false;
       renderCalendar();
@@ -117,7 +94,7 @@ if (adminCalendarGrid) {
       }
 
       console.error("Erro ao carregar detalhes do dia:", error);
-      alert("Não foi possível carregar os detalhes do dia.");
+      showErrorModal("Não foi possível carregar os detalhes do dia.");
     }
   }
 
@@ -221,39 +198,25 @@ if (adminCalendarGrid) {
     });
   }
 
-  slotsContainerEl.addEventListener("click", (e) => {
+  slotsContainerEl.addEventListener("click", async (e) => {
     const btn = e.target.closest(".admin-slot-delete");
     if (!btn || !btn.dataset.id) return;
 
     const key = formatDateKey(selectedDate);
-    openDeleteModal(btn.dataset.id, key);
+    const confirmed = await showConfirmModal({
+      title: "Confirmar exclusão",
+      body: "Tem certeza de que deseja remover este horário? Esta ação não pode ser desfeita.",
+      confirmText: "Excluir",
+    });
+    if (!confirmed) return;
+
+    try {
+      await api(`/api/admin/availability/${key}/slots/${btn.dataset.id}`, { method: "DELETE" });
+      await loadMonthAvailability();
+    } catch (error) {
+      showErrorModal(error.message || "Não foi possível remover o horário.");
+    }
   });
-
-  if (deleteSlotCancel) {
-    deleteSlotCancel.addEventListener("click", closeDeleteModal);
-  }
-
-  if (deleteSlotConfirm) {
-    deleteSlotConfirm.addEventListener("click", async () => {
-      if (!pendingDeleteSlotId || !pendingDeleteDateKey) return;
-
-      try {
-        await api(`/api/admin/availability/${pendingDeleteDateKey}/slots/${pendingDeleteSlotId}`, { method: "DELETE" });
-        closeDeleteModal();
-        await loadMonthAvailability();
-      } catch (error) {
-        alert(error.message || "Não foi possível remover o horário.");
-      }
-    });
-  }
-
-  if (deleteSlotModal) {
-    deleteSlotModal.addEventListener("click", (event) => {
-      if (event.target === deleteSlotModal) {
-        closeDeleteModal();
-      }
-    });
-  }
 
   if (prevMonthBtn) {
     prevMonthBtn.addEventListener("click", () => {
@@ -279,7 +242,7 @@ if (adminCalendarGrid) {
         });
         await loadMonthAvailability();
       } catch (error) {
-        alert(error.message || "Não foi possível atualizar o dia.");
+        showErrorModal(error.message || "Não foi possível atualizar o dia.");
         dayToggleEl.checked = !dayToggleEl.checked;
       }
     });
@@ -294,7 +257,7 @@ if (adminCalendarGrid) {
       const end_time = endEl?.value;
 
       if (!start_time || !end_time || start_time >= end_time) {
-        alert("O horário de fim deve ser depois do início.");
+        showWarningModal("O horário de fim deve ser depois do início.");
         return;
       }
 
@@ -306,7 +269,7 @@ if (adminCalendarGrid) {
         });
         await loadMonthAvailability();
       } catch (error) {
-        alert(error.message || "Não foi possível adicionar o horário.");
+        showErrorModal(error.message || "Não foi possível adicionar o horário.");
       }
     });
   }
@@ -322,7 +285,7 @@ if (adminCalendarGrid) {
         viewDate = new Date(nextDate.getFullYear(), nextDate.getMonth(), 1);
         await loadMonthAvailability();
       } catch (error) {
-        alert(error.message || "Não foi possível copiar os horários.");
+        showErrorModal(error.message || "Não foi possível copiar os horários.");
       }
     });
   }

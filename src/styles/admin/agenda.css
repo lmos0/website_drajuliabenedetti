@@ -30,7 +30,7 @@
 }
 
 .admin-calendar-card {
-  padding: 24px 18px;
+  padding: 24px 12px;
   background: var(--surface);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow);
@@ -72,7 +72,7 @@
 .admin-calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 4px;
   margin-bottom: 12px;
   text-align: center;
 }
@@ -88,18 +88,18 @@
 .admin-calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 4px;
 }
 
 .admin-calendar-day,
 .admin-calendar-day-placeholder {
-  aspect-ratio: 1;
   border-radius: var(--radius-sm);
 }
 
 .admin-calendar-day {
   display: grid;
   place-items: center;
+  min-height: 40px;
   padding: 4px;
   border: 0;
   background: transparent;
@@ -108,6 +108,10 @@
   cursor: pointer;
   transition: 180ms ease;
   position: relative;
+}
+
+.admin-calendar-day-placeholder {
+  min-height: 40px;
 }
 
 .admin-calendar-day:hover:not(:disabled) {
@@ -311,7 +315,7 @@
 }
 
 .admin-slot-form-fields .field {
-  min-width: calc(50% - 35px);
+  min-width: auto;
   flex: 1;
   gap: 6px;
   margin: 0;
@@ -385,7 +389,7 @@
 .admin-slot-status {
   padding: 4px 8px;
   border-radius: var(--radius-sm);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -404,8 +408,8 @@
 .admin-slot-delete {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: 0;
   border-radius: 50%;
   background: transparent;
@@ -417,6 +421,12 @@
 
 .admin-slot:hover .admin-slot-delete {
   opacity: 1;
+}
+
+@media (hover: none) {
+  .admin-slot-delete {
+    opacity: 1;
+  }
 }
 
 .admin-slot-delete:hover {
@@ -449,80 +459,6 @@
   border-radius: var(--radius-sm);
 }
 
-.admin-modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(35, 26, 17, 0.5);
-  z-index: 100;
-  padding: 24px;
-}
-
-.admin-modal-overlay.open {
-  display: flex;
-}
-
-.admin-modal {
-  width: 100%;
-  max-width: 420px;
-  padding: 28px;
-  background: var(--bg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
-}
-
-.admin-modal-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.admin-modal-header .material-symbols-outlined {
-  font-size: 28px;
-  color: var(--error);
-}
-
-.admin-modal-header h3 {
-  margin: 0;
-  font-family: "Bodoni Moda", serif;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.admin-modal-body {
-  margin: 0 0 24px;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-.admin-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.admin-modal-actions .button,
-.admin-modal-actions .button-outline {
-  min-height: 42px;
-  padding: 0 20px;
-}
-
-.admin-button-danger {
-  background: var(--error);
-  border-color: var(--error);
-  color: var(--white);
-}
-
-.admin-button-danger:hover {
-  background: #9c2b22;
-  border-color: #9c2b22;
-}
-
 @media (min-width: 641px) {
   .admin-calendar-card,
   .admin-panel {
@@ -537,12 +473,13 @@
     gap: 10px;
   }
 
-  .admin-calendar-day {
-    font-size: 0.95rem;
+  .admin-calendar-day,
+  .admin-calendar-day-placeholder {
+    aspect-ratio: 1;
   }
 
-  .admin-slot-form-fields .field {
-    min-width: auto;
+  .admin-calendar-day {
+    font-size: 0.95rem;
   }
 }
 
@@ -558,11 +495,5 @@
 
   .admin-content {
     padding: 48px 80px 80px;
-  }
-}
-
-@media (min-width: 1101px) {
-  .admin-content {
-    padding: 40px 24px 64px;
   }
 }

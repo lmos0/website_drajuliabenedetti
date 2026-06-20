@@ -91,9 +91,9 @@
 }
 
 .admin-filter-button {
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 16px;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
 }
 
@@ -170,7 +170,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -205,7 +205,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
+  background: var(--bg-alt);
   min-width: 0;
   min-height: 50vh;
 }
@@ -236,7 +236,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 16px;
   min-height: 0;
+  padding: 16px;
 }
 
 .admin-message-detail-header {
@@ -245,8 +247,9 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  padding: 24px;
-  border-bottom: 1px solid var(--line);
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
 
@@ -328,26 +331,30 @@
 }
 
 .admin-message-body {
-  flex: 1;
-  min-height: 220px;
-  padding: 24px;
+  min-height: 180px;
+  max-height: 38vh;
+  padding: 22px;
   overflow-y: auto;
+  overflow-x: hidden;
   font-size: 1rem;
   line-height: 1.7;
   color: var(--text);
   white-space: pre-line;
-  background: var(--bg);
+  word-wrap: break-word;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
 }
 
 .admin-message-reply {
-  padding: 16px;
-  border-top: 1px solid var(--line);
-  background: var(--surface);
+  padding: 0;
+  border-top: 0;
+  background: transparent;
   flex-shrink: 0;
 }
 
 .admin-message-reply-box {
-  background: var(--bg);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -361,7 +368,8 @@
 
 .admin-message-reply-box textarea {
   width: 100%;
-  padding: 16px;
+  min-height: 132px;
+  padding: 18px 20px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -373,11 +381,13 @@
 
 .admin-message-reply-toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-top: 1px solid var(--line);
+  background: var(--bg);
 }
 
 .admin-message-reply-tools {
@@ -428,11 +438,15 @@
     min-width: 280px;
   }
 
+  .admin-message-detail-content {
+    gap: 20px;
+    padding: 24px 32px;
+  }
+
   .admin-message-detail-header,
-  .admin-message-body,
-  .admin-message-reply {
-    padding-left: 32px;
-    padding-right: 32px;
+  .admin-message-body {
+    padding-left: 28px;
+    padding-right: 28px;
   }
 }
 
@@ -456,7 +470,7 @@
 
   .admin-message-detail-header {
     flex-direction: row;
-    padding: 32px 48px;
+    padding: 28px 32px;
   }
 
   .admin-message-detail-actions {
@@ -464,10 +478,12 @@
   }
 
   .admin-message-body {
-    padding: 32px 48px;
+    min-height: 260px;
+    max-height: 42vh;
+    padding: 30px 32px;
   }
 
-  .admin-message-reply {
-    padding: 24px 48px;
+  .admin-message-reply-box textarea {
+    min-height: 150px;
   }
 }

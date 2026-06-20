@@ -90,6 +90,10 @@
 }
 
 .admin-login-forgot {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 4px 0;
   font-size: 0.9rem;
   color: var(--primary);
   transition: 180ms ease;
@@ -117,6 +121,10 @@
 }
 
 .admin-login-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 4px 8px;
   font-size: 0.85rem;
   color: var(--primary);
   text-transform: uppercase;

@@ -37,7 +37,7 @@
   background: rgba(125, 86, 45, 0.06);
 }
 
-@media (min-width: 981px) {
+@media (min-width: 641px) {
   .button,
   .button-outline,
   .header-cta {

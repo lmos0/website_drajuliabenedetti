@@ -2,6 +2,7 @@ import { api } from "../services/api.js";
 import { escapeHtml } from "../utils/sanitize.js";
 import { getInitials } from "../utils/string.js";
 import { initAdminMenuToggle } from "../components/menu-toggle.js";
+import { showErrorModal, showInfoModal } from "../utils/modal.js";
 
 import { debounce } from "../utils/debounce.js";
 
@@ -172,9 +173,9 @@ if (messagesContainer) {
     } catch (error) {
       const isNotFound = error.message && error.message.toLowerCase().includes("not found");
       if (isNotFound) {
-        alert(`O endpoint PUT /api/admin/contact-messages/{id}/status ainda não está disponível no backend.`);
+        showInfoModal("O endpoint PUT /api/admin/contact-messages/{id}/status ainda não está disponível no backend.");
       } else {
-        alert(error.message || "Não foi possível atualizar a mensagem.");
+        showErrorModal(error.message || "Não foi possível atualizar a mensagem.");
       }
       return false;
     }
@@ -187,9 +188,9 @@ if (messagesContainer) {
     } catch (error) {
       const isNotFound = error.message && error.message.toLowerCase().includes("not found");
       if (isNotFound) {
-        alert(`O endpoint DELETE /api/admin/contact-messages/{id} ainda não está disponível no backend.`);
+        showInfoModal("O endpoint DELETE /api/admin/contact-messages/{id} ainda não está disponível no backend.");
       } else {
-        alert(error.message || "Não foi possível excluir a mensagem.");
+        showErrorModal(error.message || "Não foi possível excluir a mensagem.");
       }
       return false;
     }
