@@ -1,0 +1,325 @@
+.admin-appointments-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.admin-appointments-header h1 {
+  margin: 0 0 8px;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-appointments-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.admin-appointments-search {
+  position: relative;
+  width: 100%;
+  min-width: auto;
+}
+
+.admin-appointments-search .material-symbols-outlined {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.admin-appointments-search input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+
+.admin-appointments-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.admin-appointments-list {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-appointments-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-appointments-filters .button,
+.admin-appointments-filters .button-outline {
+  min-height: 38px;
+  padding: 8px 16px;
+  font-size: 0.78rem;
+}
+
+.admin-appointments-date-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-appointments-date-filter label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.admin-appointments-date-filter input {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+
+.admin-appointments-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-appointment-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: 180ms ease;
+}
+
+.admin-appointment-item:hover,
+.admin-appointment-item.active {
+  border-color: var(--primary);
+  background: var(--bg-alt);
+}
+
+.admin-appointment-avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-appointment-info h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.admin-appointment-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.admin-appointment-meta {
+  grid-column: 1 / -1;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-appointment-date {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.admin-appointment-time {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.admin-appointment-status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-appointment-status.scheduled {
+  background: var(--surface-strong);
+  color: var(--muted);
+}
+
+.admin-appointment-status.canceled {
+  background: var(--error-container);
+  color: var(--error);
+}
+
+.admin-appointment-status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.admin-appointment-detail {
+  width: 100%;
+  flex-shrink: 0;
+  padding: 28px;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.admin-appointment-detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 300px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.admin-appointment-detail-empty .material-symbols-outlined {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.admin-appointment-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-appointment-detail-header h2 {
+  margin: 0 0 8px;
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-appointment-detail-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.admin-appointment-detail-section {
+  margin-bottom: 20px;
+}
+
+.admin-appointment-detail-section h4 {
+  margin: 0 0 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.admin-appointment-detail-section p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.admin-appointment-detail-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-appointment-detail-actions .button,
+.admin-appointment-detail-actions .button-outline {
+  flex: 1;
+  min-height: 42px;
+  font-size: 0.8rem;
+}
+
+.admin-appointment-detail-content.hidden,
+.admin-appointment-detail-empty.hidden {
+  display: none;
+}
+
+@media (min-width: 641px) {
+  .admin-appointments-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .admin-appointments-search {
+    width: auto;
+    min-width: 280px;
+  }
+
+  .admin-appointment-item {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .admin-appointment-meta {
+    grid-column: auto;
+    text-align: right;
+    display: block;
+  }
+}
+
+@media (min-width: 981px) {
+  .admin-appointments-search {
+    width: 380px;
+  }
+
+  .admin-appointments-layout {
+    flex-direction: row;
+  }
+
+  .admin-appointment-detail {
+    width: 380px;
+  }
+}
+
+.clear-date-button {
+  min-height: 38px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+}

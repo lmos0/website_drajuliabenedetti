@@ -1,0 +1,568 @@
+.admin-agenda-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.admin-calendar-column {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-page-header {
+  margin-bottom: 40px;
+}
+
+.admin-page-header h1 {
+  margin: 0 0 8px;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-page-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.admin-calendar-card {
+  padding: 24px 18px;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+.admin-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.admin-calendar-header h2 {
+  margin: 0;
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-calendar-nav {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: 180ms ease;
+}
+
+.admin-calendar-nav:hover {
+  background: var(--surface-strong);
+  color: var(--primary);
+}
+
+.admin-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.admin-calendar-weekdays span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.admin-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.admin-calendar-day,
+.admin-calendar-day-placeholder {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+}
+
+.admin-calendar-day {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 180ms ease;
+  position: relative;
+}
+
+.admin-calendar-day:hover:not(:disabled) {
+  background: var(--surface-strong);
+}
+
+.admin-calendar-day.selected {
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(125, 86, 45, 0.22);
+}
+
+.admin-calendar-day.today {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.admin-calendar-day.today.selected {
+  border-color: var(--white);
+  color: var(--white);
+  box-shadow: 0 0 0 2px var(--bg), 0 4px 12px rgba(125, 86, 45, 0.22);
+}
+
+.admin-calendar-day.unavailable {
+  background: var(--surface-strong);
+  color: rgba(80, 69, 59, 0.4);
+  cursor: not-allowed;
+}
+
+.admin-calendar-day.unavailable::after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 1px;
+  background: rgba(80, 69, 59, 0.3);
+  transform: rotate(45deg);
+}
+
+.admin-calendar-day.has-slots::before {
+  content: "";
+  position: absolute;
+  bottom: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.5;
+}
+
+.admin-calendar-day.selected.has-slots::before {
+  background: var(--bg);
+  opacity: 1;
+}
+
+.admin-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.admin-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.admin-legend-dot-selected {
+  background: var(--primary);
+}
+
+.admin-legend-dot-slots {
+  background: var(--primary);
+  opacity: 0.4;
+}
+
+.admin-legend-dot-unavailable {
+  background: var(--surface-strong);
+  border: 1px solid rgba(80, 69, 59, 0.2);
+}
+
+.admin-panel {
+  width: 100%;
+  padding: 24px 18px;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.admin-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.admin-panel-header h3 {
+  margin: 0 0 4px;
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-panel-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.admin-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.admin-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.admin-toggle-track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  transition: 180ms ease;
+}
+
+.admin-toggle-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: 180ms ease;
+}
+
+.admin-toggle input:checked + .admin-toggle-track {
+  background: var(--primary);
+}
+
+.admin-toggle input:checked + .admin-toggle-track::after {
+  transform: translateX(20px);
+}
+
+.admin-toggle-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.admin-slot-form {
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.admin-slot-form h4,
+.admin-slots-header h4 {
+  margin: 0 0 16px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.admin-slot-form-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.admin-slot-form-fields .field {
+  min-width: calc(50% - 35px);
+  flex: 1;
+  gap: 6px;
+  margin: 0;
+}
+
+.admin-slot-form-fields .field input {
+  padding: 10px 0;
+}
+
+.admin-slot-add {
+  width: 42px;
+  height: 42px;
+  min-height: auto;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.admin-slots-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: 180ms ease;
+}
+
+.admin-slot:hover {
+  border-color: rgba(125, 86, 45, 0.34);
+}
+
+.admin-slot-booked {
+  background: var(--surface-strong);
+  border-color: transparent;
+}
+
+.admin-slot-time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.admin-slot-time .material-symbols-outlined {
+  font-size: 1.1rem;
+  color: var(--primary);
+  opacity: 0.7;
+}
+
+.admin-slot-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-slot-status {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-slot-status.free {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.admin-slot-status.booked {
+  background: var(--secondary);
+  color: var(--white);
+}
+
+.admin-slot-delete {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: 180ms ease;
+}
+
+.admin-slot:hover .admin-slot-delete {
+  opacity: 1;
+}
+
+.admin-slot-delete:hover {
+  color: var(--error);
+  background: var(--error-container);
+}
+
+.admin-slot-delete .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.admin-panel-footer {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-copy-button {
+  width: 100%;
+  min-height: 48px;
+}
+
+.admin-empty-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+  background: var(--bg);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(35, 26, 17, 0.5);
+  z-index: 100;
+  padding: 24px;
+}
+
+.admin-modal-overlay.open {
+  display: flex;
+}
+
+.admin-modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+.admin-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-modal-header .material-symbols-outlined {
+  font-size: 28px;
+  color: var(--error);
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  font-family: "Bodoni Moda", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-modal-body {
+  margin: 0 0 24px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.admin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.admin-modal-actions .button,
+.admin-modal-actions .button-outline {
+  min-height: 42px;
+  padding: 0 20px;
+}
+
+.admin-button-danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--white);
+}
+
+.admin-button-danger:hover {
+  background: #9c2b22;
+  border-color: #9c2b22;
+}
+
+@media (min-width: 641px) {
+  .admin-calendar-card,
+  .admin-panel {
+    padding: 32px;
+  }
+
+  .admin-calendar-weekdays {
+    gap: 10px;
+  }
+
+  .admin-calendar-grid {
+    gap: 10px;
+  }
+
+  .admin-calendar-day {
+    font-size: 0.95rem;
+  }
+
+  .admin-slot-form-fields .field {
+    min-width: auto;
+  }
+}
+
+@media (min-width: 981px) {
+  .admin-agenda-layout {
+    flex-direction: row;
+  }
+
+  .admin-panel {
+    width: 380px;
+    flex-shrink: 0;
+  }
+
+  .admin-content {
+    padding: 48px 80px 80px;
+  }
+}
+
+@media (min-width: 1101px) {
+  .admin-content {
+    padding: 40px 24px 64px;
+  }
+}

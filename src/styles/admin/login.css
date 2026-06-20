@@ -1,0 +1,149 @@
+.admin-body {
+  min-height: 100vh;
+}
+
+.admin-login {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+.admin-login-image {
+  display: none;
+}
+
+.admin-login-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 248, 244, 0.1);
+}
+
+.admin-login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: var(--bg);
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-brand {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.admin-login-mark {
+  display: block;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(3.4rem, 8vw, 5rem);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 18px;
+}
+
+.admin-login-brand h1 {
+  margin: 0 0 10px;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-login-brand p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.admin-login-fields {
+  display: grid;
+  gap: 28px;
+}
+
+.admin-login-fields .field {
+  gap: 8px;
+}
+
+.admin-login-fields .field input {
+  padding: 14px 0;
+  border-bottom-color: rgba(80, 69, 59, 0.22);
+}
+
+.admin-login-fields .field input::placeholder {
+  color: rgba(80, 69, 59, 0.45);
+}
+
+.admin-login-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-login-forgot {
+  font-size: 0.9rem;
+  color: var(--primary);
+  transition: 180ms ease;
+}
+
+.admin-login-forgot:hover {
+  color: var(--primary-dark);
+}
+
+.admin-login-submit {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.admin-login-footer {
+  margin-top: 36px;
+  text-align: center;
+}
+
+.admin-login-footer p {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  opacity: 0.72;
+}
+
+.admin-login-back {
+  font-size: 0.85rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: 180ms ease;
+}
+
+.admin-login-back:hover {
+  color: var(--primary-dark);
+}
+
+@media (min-width: 981px) {
+  .admin-login {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-login-image {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .admin-login-form {
+    padding: 48px 80px;
+  }
+
+  .admin-login-brand {
+    margin-bottom: 48px;
+  }
+}
